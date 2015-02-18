@@ -1,0 +1,497 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Bacon.js & Talkie.js</title>
+  <link rel="stylesheet" href="./dist/talkie.min.css">
+  <link rel="stylesheet" href="./dist/monokai_sublime.min.css">
+  <style>
+    [layout] pre {
+      font-size: 1.5em;
+    }
+  </style>
+</head>
+<body>
+
+<script layout="cover" h-start invert type="text/x-markdown"
+        backface="http://25.media.tumblr.com/tumblr_m7rfcefrvX1rc6m9wo1_500.jpg"
+        backface-filter="blur(3px) brightness(.8)">
+# Bacon.js & Talkie.js
+
+[@ahomu / Ayumu Sato](http://aho.mu)
+</script>
+
+<section layout>
+  <h3>よろしくお願いします</h3>
+  <blockquote class="twitter-tweet" lang="en"><p>名古屋からリモート勤務させてくれるフロントエンド系の働き口ないかな〜〜〜！！</p>&mdash; あほむ@消費豚 (@ahomu) <a href="https://twitter.com/ahomu/status/555622336020234240">January 15, 2015</a></blockquote>
+  <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</section>
+
+<script layout="bullets" type="text/x-markdown">
+## TL;DR
+
+Keynoteに疲れたので、自分でHTMLスライド作ったら<br>まあまあ満足しました。ベーコンおいしいです。^q^
+</script>
+<!--
+<script layout="bullets" type="text/x-markdown">
+## テーマ
+
+- Talkie.js の紹介
+- Bacon.js の雰囲気
+</script>
+-->
+<!-- ================================================================================ -->
+
+<script layout="title" invert type="text/x-markdown"
+        backface="http://i.kinja-img.com/gawker-media/image/upload/s--hnugxz0P--/jnkgq6nwgbkrj8ezrgfp.jpg"
+        backface-filter="blur(1px) brightness(.8)">
+# Talkie.js のこと
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 車輪の再発明をした背景
+
+[Frontrend](https://frontrend.github.io/)のスタメン(?)っぽいメンバーは、ビジュアルデザインにもステータスをふっている人が多く、毎回オシャレなスライドを作ってくる。
+2012年当時は[Reveal.js](http://lab.hakim.se/reveal-js/)で作っていたが周りとのギャップ、ビジュアル作りに限界を感じてKeynoteに移行。
+以後、Keynoteでオブジェクトのサイズや配置を調整することに力を傾けた[スライド作りスタイル](https://speakerdeck.com/ahomu)が始まる。
+ところが最近になって、Web開発者なのにKeynoteを調整する日々に疑問を抱くようになりHTMLスライドに戻りたい気持ちが高まる。（ｲﾏｺｺ）
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## ということで作りました
+
+洋モノの既製品は日本語スライドと相性が微妙だった
+</script>
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/talkie-github.png"
+        backface-filter="blur(1px) brightness(.8)">
+## [github.com/ahomu/Talkie](https://github.com/ahomu/Talkie)
+</script>
+
+<!--
+
+<script layout="bullets" type="text/x-markdown">
+## 車輪の再発明で<br>実現したかったこと
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## HTMLスライドで<br>見た目を担保する
+
+- 文字サイズと太さで、ちゃんとメリハリをつける
+- 自分のマシンで見せる前提でフォントを選ぶ
+- 淡い変化の背景色を基調して、単調さをやわらげる
+- ところどころ鮮やかな写真を背景の全面に差し込む
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## HTMLスライドで<br>量産性を担保する
+
+- Markdown と Code Highlighting はマスト
+- レイアウトパターンを無闇に増やさない
+- なにもかんがえなくていい垂直水平中央寄せが最強
+- ステップ表示とかは使いこなせないので不要
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## よかったら(使って|見て)ください
+</script>
+
+-->
+
+<!-- ================================================================================ -->
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/bacon.jpg"
+        backface-filter="blur(1px) brightness(.8)">
+# Bacon.js のこと
+
+*写真は [http://gigazine.net/news/20121018-prosit/](http://gigazine.net/news/20121018-prosit/) より*
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Talkie.js では<br>Bacon.js を利用しています
+
+前から興味あったので使ってみた系
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Bacon.js はイベントや<br>データの流れを<br>いいカンジにしてくれます
+
+Observer と Promise のパワーアップ版みたいなやつ
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## この3つだけ覚えればOK
+
+- Bacon.EventStream
+  - 処理の起点になる非同期データストリーム
+- Bacon.Property
+  - ストリームから生成される現在値(状態)を示すもの
+- Bacon.Bus *(便利な変種ストリーム)*
+  - 任意の値をpushしたり、他のStreamをplugできる
+</script>
+
+<section layout>
+  <h1>
+    <span id="minus">-</span>
+    <strong id="counter" style="display: inline-block; width: 100px; text-align: center"></strong>
+    <span id="plus">+</span>
+  </h1>
+  <style>
+    #counter, #plus, #minus {
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', demo1);
+    function demo1() {
+      function getById(ident) {
+        return document.getElementById(ident);
+      }
+      var plus  = Bacon.fromEventTarget(getById('plus'), 'click');
+      var minus = Bacon.fromEventTarget(getById('minus'), 'click');
+      var both  = plus.map(1).merge(minus.map(-1));
+      both
+        .scan(0, function(acc, v) { return acc + v; })
+        .onValue(function(v) { getById('counter').innerHTML = v; });
+    }
+  </script>
+</section>
+
+<script layout="code" type="text/x-markdown">
+### ふつうっぽいコード
+
+```javascript
+// @type {Number} 現在の値
+var current = 0;
+
+// click されたら
+plusEl.addEventListener('click', function(e) {
+  // 加算/減算して
+  current++;
+  // 反映する
+  counterEl.innerHTML = current;
+});
+
+minusEl.addEventListener('click', function(e) {
+  current--;
+  counterEl.innerHTML = current;
+});
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+### ベーコンがおいしいコード
+
+```javascript
+// @type {Bacon.EventStream} +1/-1のストリーム
+var plus  = Bacon.fromEventTarget(pEl,'click').map(1);
+var minus = Bacon.fromEventTarget(mEl,'click').map(-1);
+var src   = Bacon.mergeAll(plus, minus);
+// @type {Bacon.Property} 現在の値
+var current = src.scan(0, function(acc, v) {
+  return acc + v;
+});
+// @type {Bacon.Bus} やってきたvalueをDOMに反映するバス
+var counterBus = new Bacon.Bus();
+counterBus.onValue(function(v) {
+  counterEl.innerHTML = v;
+});
+
+counterBus.plug(current); // it works!
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+/*
+                  +---------------+
+                  | click.map(1)  |--->
+                  +------+--------+
+
+                  +------+--------+
+                  | click.map(-1) |--->
+                  +---------------+
+*/
+
+var plus  = Bacon.fromEventTarget(pEl,'click').map(1);
+var minus = Bacon.fromEventTarget(mEl,'click').map(-1);
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+/*
+          +--------------+
+          | click.map(1) |
+          +------+-------+
+                 |
+                 +---------->
+                 |
+          +------+--------+
+          | click.map(-1) |
+          +---------------+
+*/
+var src = Bacon.mergeAll(plus, minus);
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+/*
+  +--------------+
+  | click.map(1) |
+  +------+-------+
+         |           /------------\
+         +---------->|scan(0, add)|------->
+         |           \------------/
+  +------+--------+
+  | click.map(-1) |
+  +---------------+
+*/
+var current = src.scan(0, function(acc, v) {
+  return acc + v;
+});
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+/*
+                +-------------+
+       [bus]--->|innerHTML = v|
+                +-------------+
+*/
+var counterBus = new Bacon.Bus();
+counterBus.onValue(function(v) {
+  counterEl.innerHTML = v;
+});
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+/*
+ +--------------+
+ | click.map(1) |
+ +------+-------+
+        |        /------------\        +-------------+
+        +------->|scan(0, add)|-[bus]->|innerHTML = v|
+        |        \------------/        +-------------+
+ +------+--------+
+ | click.map(-1) |
+ +---------------+
+*/
+        var release = counterBus.plug(current);
+
+            // release(); -> release plug
+```
+</script>
+
+<!--
+<script layout="bullets" type="text/x-markdown">
+## EventStream の位置づけ
+
+![Fig](./img/fig-async-values.png)
+
+*ref. [Functional Reactive Programming with RxJS](http://www.slideshare.net/stefanmayer13/functional-reactive-programming-with-rxjs/18)*
+</script>
+
+<script layout="code" type="text/x-markdown">
+### Event と Promise *(雰囲気)*
+
+```javascript
+// Event & Promise
+el.addEventListener('click', function(e) {
+
+  var arg = e.target.value;
+
+  asyncTask(arg)
+    .then(function(value) {
+      // Ahhh...
+    }).catch(function(reason) {
+      // Ouch!
+    });
+});
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+### すごいPromiseっぽい *([参考](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754))*
+
+```javascript
+// Event Stream
+var click = Bacon.fromEventTarget(el, 'click');
+
+click
+  .map(function(e) { return e.target.value; })
+  .map(asyncTask)
+  .onValue(function(value) {
+    // Fooo!!!
+  })
+  .onError(function(reason) {
+    // Oops
+  });
+```
+</script>
+-->
+
+<script layout="bullets" type="text/x-markdown">
+## ベーコンのおいしさ
+
+- 手続きを書く代わりに、データの流れと関係を宣言できる
+- イベントも非同期処理も値も、ストリームとして均一に扱える
+- 自動で変化する Property に「状態」を封じ込められる
+- 関数型っぽく、処理の粒度を小さくしたスタイルで書ける
+- DOMへの副作用は処理の出口 (`onValue`) に集約できる
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Talkie.js 中の Bacon.js 使用例
+
+サンプルコードの陳列
+</script>
+
+<script layout="code" type="text/x-markdown">
+### ポインター
+
+```javascript
+var move = Bacon.fromEventTarget(el, 'mousemove');
+
+var x = move.map(function(e) { return e.x; });
+var y = move.map(function(e) { return e.y; });
+
+x.onValue(function(v) { pointer.style.left = v; });
+y.onValue(function(v) { pointer.style.top =v; });
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+### 進む・戻る
+
+```javascript
+var paging = require('paging');
+
+var keyup = Bacon.fromEventTarget(doc, 'keyup');
+var right = keyup.filter(keyCodeIs('right'));
+var left  = keyup.filter(keyCodeIs('left'));
+
+paging.nextBus.plug(right);
+paging.prevBus.plug(left);
+
+window.next = function() { paging.nextBus.push(); }
+window.prev = function() { paging.prevBus.push(); }
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+### スワイプ (1/2) *(簡略サンプル)*
+
+```javascript
+var start = Bacon.fromEventTarget(el,'touchstart');
+var move  = Bacon.fromEventTarget(el,'touchmove');
+var end   = Bacon.fromEventTarget(el,'touchend');
+
+var moving = start.flatMap(function(init) {
+  return move.takeUntil(end)
+    .scan({}, function(acc, move) {
+      return {
+        init : acc.init || init.changedTouches[0],
+        curt : move.changedTouches[0]
+      };
+    }).skip(1);
+});
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+### スワイプ (2/2) *(簡略サンプル)*
+
+```javascript
+var swipeLeft = moving.filter(function(moves) {
+  var init = moves.init;
+  var curt = moves.curt;
+  var delta = init.clientX - curt.clientX;
+
+  return delta > 50;
+});
+
+swipeLeft.onValue(function() {
+
+   // swipe left!
+
+});
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## React と組み合わせたサンプル
+
+[github.com/ahomu/demo-react-bacon](https://github.com/ahomu/demo-react-bacon)
+</script>
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/baconjs.png" backface-filter="blur(1px) brightness(.4)">
+## Bacon.js is a FRP library
+
+FRP = Functional Reactive Programming
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown">
+## 詳しくは週末の Frontrend で!!
+
+Room A 13:30~ "Reactive Programming in JavaScript"
+</script>
+
+<!-- ================================================================================ -->
+
+<script layout="bullets-invert" type="text/x-markdown">
+## 感想
+
+- Bacon.js + Backbone.js/React あたりはアリ
+- オブジェクト間のメッセージングに使うのが導入に◎
+- ストリームの入出力をドキュメントで明示しないと大変
+- 高階関数の記号 or 命名規則を考えないと大変
+- 副作用がある関数の記号 or 命名規則を考えないと大変
+</script>
+
+<!--
+<script layout="bullets-invert" type="text/x-markdown">
+## 課題
+
+- PDF の書き出しをラクにやりたい
+- [Reveal.jsのスクリーンショットをPhantomJSでガンガン撮る](http://havelog.ayumusato.com/develop/javascript/e520-revealjs_screenshot_by_phantomjs.html)
+- ↑ と同様の手段で作れるがフォントの自由度が微妙
+- 図形とアニメーションもやりたい
+- SVG Animations とか相性良いがする
+</script>
+-->
+
+<script layout="cover" invert type="text/x-markdown"
+        backface="http://i.imgur.com/nAnqC.jpg" backface-filter="blur(1px) brightness(.9)">
+<h1 style="font-weight:bold;">Question?</h1>
+
+- <a href="http://aho.mu" target="_blank" style="color: white !important; font-weight:bold;">aho.mu</a>
+- <a href="https://twitter.com/ahomu" target="_blank" style="color: white !important; font-weight:bold;">@ahomu</a>
+</script>
+
+<script src="./dist/highlight.min.js"></script>
+<script src="./dist/talkie.min.js"></script>
+<script>
+  var talkie  = Talkie({wide:false, control: true, progress: true});
+
+  talkie.next.plug(talkie.control.keydown('s'));
+  talkie.next.plug(talkie.control.keydown('n'));
+  talkie.prev.plug(talkie.control.keydown('a'));
+  talkie.prev.plug(talkie.control.keydown('p'));
+
+  window.Bacon = talkie.Bacon;
+  window.next  = function() { talkie.next.push(); };
+  window.prev  = function() { talkie.prev.push(); };
+  window.jump  = function(num) { talkie.jump.push(num); };
+</script>
+</body>
+</html>
