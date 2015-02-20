@@ -1,0 +1,1171 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Reactive Programming in JavaScript</title>
+  <link rel="stylesheet" href="./dist/talkie.min.css">
+  <link rel="stylesheet" href="./dist/monokai_sublime.min.css">
+  <style>
+    .twitter-tweet {
+      margin-top: 1em;
+      transform: scale(1.3);
+    }
+    .speakerdeck-iframe {
+      width: 800px !important;
+      height: 600px !important;
+    }
+    [layout=iframe] iframe {
+      width: 640px;
+      height: 480px;
+    }
+
+    @media (max-device-width: 640px) {
+      #control {
+        font-size: 200% !important;
+        right: 10px;
+        bottom: 10px;
+      }
+      #next, #prev {
+        font-size: 400% !important;
+        right: 10px;
+        bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<script layout="cover" h-start invert type="text/x-markdown"
+        backface="./img/backface-cover.jpg"
+        backface-filter="blur(1px) brightness(.8)">
+# Reactive Programming in JavaScript
+
+**[@ahomu](http://aho.mu) / 2015.02.21 - [Frontrend Final Conference](frontrend.github.io/conference/)**
+</script>
+
+<section layout>
+  <h1>
+    <span id="minus">-</span>
+    <strong id="counter" style="display: inline-block; width: 100px; text-align: center"></strong>
+    <span id="plus">+</span>
+  </h1>
+  <style>
+    #counter, #plus, #minus {
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', demo1);
+    function demo1() {
+      function getById(ident) {
+        return document.getElementById(ident);
+      }
+      var plus  = Bacon.fromEventTarget(getById('plus'), 'click');
+      var minus = Bacon.fromEventTarget(getById('minus'), 'click');
+      var both  = plus.map(1).merge(minus.map(-1));
+      both
+        .scan(0, function(acc, v) { return acc + v; })
+        .onValue(function(v) { getById('counter').innerHTML = v; });
+    }
+  </script>
+</section>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+// カウンター値の保持
+var current = 0;
+
+// click されたら...
+plusEl.addEventListener('click', function(e) {
+  // current を加算/減算して...
+  current++;
+  // innerHTML を更新する
+  counterEl.innerHTML = current;
+});
+
+minusEl.addEventListener('click', function(e) {
+  current--;
+  counterEl.innerHTML = current;
+});
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+// click で 1/-1 が流れるストリーム
+var plus  = getClickStream(plusEl).map(1);
+var minus = getClickStream(minusEl).map(-1);
+
+// 1/-1 のストリームをひとつにマージ
+var source = plus.merge(minus);
+
+// ストリームから値が来ると現在値(current)を計算
+var current = source.scan(0, function(acc, v) {
+  return acc + v;
+});
+
+// current の変更を subscribe して innerHTML を更新
+current.subscribe(function(v) {
+  counterEl.innerHTML = v;
+});
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 佐藤 歩 *Ayumu Sato*
+
+- <del>Web Frontend</del> Android Engineer
+- [http://aho.mu](http://aho.mu)
+- [HTML5 Experts 幽霊部員](http://html5experts.jp/ahomu/)
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 今日のアジェンダ
+
+- What is **Reactive** Programming?
+- Reactive in Frontend **JavaScript**
+- **FRP** with Reactive Extensions
+</script>
+
+<!--
+<script layout="bullets" type="text/x-markdown">
+## 深掘りしないこと
+
+- **Truly** Reactive Programming
+- **Truly** Reactive Application
+- **Truly** Functional Programming
+</script>
+-->
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/backface-rp.jpg"
+        backface-filter="blur(1px) brightness(.8)">
+# What is **Reactive** Programming?
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## イベントや値の関係性に<br>注目したパラダイム
+
+- イベントや値の関係性 = データフロー
+- データフローの宣言を元に変更を自動的に伝播させる
+- `c = a + b` なら `c` が示す値は `a, b` と共に変わって欲しい
+</script>
+
+<!--
+<script layout="code" type="text/x-markdown">
+つまり、こうあるべき（架空）
+
+```javascript
+function add(x, y) { return x + y; }
+
+a = 1;
+b = 2;
+c = add(a, b);
+print(c); // => 3
+
+b = 10;
+print(c); // => 11
+```
+</script>
+-->
+
+<script layout="code" type="text/x-markdown">
+**current** = accumulate(merge(plus, minus))
+
+```javascript
+var plus   = getClickStream(plusEl).map(1);
+var minus  = getClickStream(minusEl).map(-1);
+var source = plus.merge(minus);
+
+var current = source.scan(0, function(acc, v) {
+  return acc + v;
+});
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 手続きの記述 → 関係性の宣言
+
+データがどのような関係なのかに集中する
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Reactive なコードは<br>宣言的なデータフローを示す
+
+- 実装はコーディング時の考え方とライブラリに依存する
+- OOP な言語やデザインパターンでも実現はできる
+- **Reactive っぽい = データの関係性を宣言的に表しているか**
+</script>
+
+<script layout="bullets"  type="text/x-markdown">
+## RP 界隈はノイズが多い
+
+- いわゆる「広義」と「狭義」すら境界が曖昧
+- Reactive っぽさ (特に自動伝播) の手段は色々ある
+- 各手段が Reactive を自称したりしなかったりする
+- ref. [Reactive Porn - steps to phantasien](http://steps.dodgson.org/b/2014/12/07/reactive-porn/)
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## ① Actor Model
+
+- Erlang Actor
+- Akka(Scala) Actor
+- 並列・分散な処理システムにおける数学モデル
+- 非同期な並列処理をいいカンジにする（乱暴）
+</script>
+
+<!--<script layout="bullets" type="text/x-markdown">-->
+<!--<img src="http://3.bp.blogspot.com/-AebDinxfGk0/UGD4Mfz6LTI/AAAAAAAAAKk/BS4V_Fp8P6k/s1600/download.png">-->
+
+<!--*via. [http://berb.github.io/diploma-thesis/original/054_actors.html](http://berb.github.io/diploma-thesis/original/054_actors.html)*-->
+<!--</script>-->
+
+<script layout="bullets" type="text/x-markdown">
+## ② Functional Reactive
+
+- Haskell FRP Libraries
+- Microsoft **Reactive Extensions**
+- 関数型のパラダイムを取り込んだ RP
+- GUI 開発で主流なのはこっち方面
+</script>
+
+<!--<script layout="bullets" type="text/x-markdown">-->
+<!--<img src="http://fernandocejas.com/wp-content/uploads/2015/01/flatMap.png">-->
+
+<!--*via. [http://fernandocejas.com/2015/01/11/rxjava-observable-tranformation-concatmap-vs-flatmap/](http://fernandocejas.com/2015/01/11/rxjava-observable-tranformation-concatmap-vs-flatmap/)*-->
+<!--</script>-->
+
+<script layout="bullets" invert type="text/x-markdown"
+        backface="img/reactivemanifesto.png" backface-filter="blur(2px) brightness(.33)">
+## ③ [The Reactive Manifesto](http://www.reactivemanifesto.org/)
+
+- Reactive な Application の特性を述べた文書
+- Responsive - 反応性
+- Resilient - 障害耐性
+- Elastic - 柔軟性
+- Message Driven - メッセージ駆動
+- 並列システム寄りとかインフラ向けで<br>フロントエンド的にはスルーしてもよさげ
+</script>
+
+<script layout="bullets" invert type="text/x-markdown"
+        backface="img/reactivestreams.png" backface-filter="blur(2px) brightness(.33)">
+## ④ [Reactive Streams](http://www.reactive-streams.org/)
+
+- Actor と Reactive Extensions の交差点が Reactive Streams
+- Node の Stream は似てるけど今の所は関係なさそう
+- ref. [2014 akka-streams-tokyo-japanese](http://www.slideshare.net/ktoso/2014-akkastreamstokyojapanese)
+- ref. [非同期ストリーム処理の標準化を目指す "Reactive Streams"](http://okapies.hateblo.jp/entry/2014/04/20/212821)
+</script>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/backface-rp-in-js.jpg"
+        backface-filter="blur(1px) brightness(.8)">
+# Reactive in Frontend **JavaScript**
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## JavaScript で UI を操作する
+
+- API からデータを受け取って HTML に反映
+- ユーザー入力を受け取って HTML に反映
+- イベントを受け取って HTML に反映
+</script>
+
+<script layout="code" type="text/x-markdown">
+### API からデータを受け取って HTML に反映
+
+```javascript
+$.getJSON('http://example.com/api', function(res) {
+  var html = '';
+  res.list.forEach(function(item) {
+    html += '<li>' + item.title + '</li>'
+  });
+  listEl.innerHTML = html;
+});
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+### ユーザー入力を受け取って HTML に反映
+
+```javascript
+buttonEl.addEventListener('click', function() {
+  targetEl.innerHTML = 'clicked!';
+}, false)
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+### イベントを受け取って HTML に反映
+
+```javascript
+bbView.listenTo(bbModel,'change',function(model) {
+  view.render(model);
+});
+```
+</script>
+
+<!--
+<script layout="bullets" type="text/x-markdown">
+## 非同期な更新の連続であり<br>その複雑性こそが課題
+
+- 非同期コントロールが求められることが多い
+- Ajaxやユーザー操作が散発的に発生する
+- コールバックやイベントで相互に連携し合う
+- ref. [Functional Reactive Programming with Bacon.js](https://speakerdeck.com/dimituri/functional-reactive-programming-with-bacon-dot-js?slide=7)
+</script>
+-->
+
+<script layout="bullets" type="text/x-markdown">
+## 非同期で変化する状態を管理して<br>都度 UI に反映するコードを<br>書くのはダルいこと
+
+すごくダルい、**本当にダルい**
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Reactive な仕組みが<br>自然と求められる
+
+Reactive = 片方の変化を他方に自動で伝播する仕組み
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## これまでの JavaScript の<br>中にみる Reactive
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Observer パターンは<br>初歩的な解決のひとつ
+
+- プログラムとして動いている仕組みは同じ
+- Reactive 的には Observer パターンを隠蔽して宣言したい
+- かつては Reactive な在り方のひとつだったのかも(?)
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## データバインディングは<br>局所的な Reactive
+
+- 何らかの仕組みで View と Model を宣言的に結びつける
+- 局所的だが GUI におけるリアクティブ要素のひとつ
+- ref. [データバインディングとリアクティブプログラミング](http://togetter.com/li/600957)
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## React with Flux は<br>Reactive なデータフロー
+
+- データを DOM へ効率よく伝播させるのはRPっぽい
+- 1方向データバインディングを実現する手段の一種
+- 細かい異論はある: ref. [Don't React - webbisauna 14](http://staltz.com/dont-react/#/)
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown"
+        backface="./img/catfight.gif" backface-filter="blur(1px) brightness(.4)">
+## 人類によるこれまでの抵抗
+
+1. コールバックを避けた非同期処理の抽象化
+  - Promise 一族, Async.js などで平たくなるよう努める
+2. UI への反映を容易にする抽象化
+  - Data Bindings や Templating (vdom含) で雑にする
+</script>
+
+<script layout="code" type="text/x-markdown"
+        backface="./img/catfight.gif" backface-filter="blur(1px) brightness(.4)">
+### Promise による非同期処理の抽象化
+
+```javascript
+// single
+promise.then(function(res) { andDo(res); });
+
+// parallel and chain
+Promise
+  .all([
+    promiseFn1(), promiseFn2(), promiseFn3()
+  ])
+  .then(function(results) {
+    return promiseFn4(results);
+  })
+  .then(function(result) { andDo(result); });
+```
+</script>
+
+<script layout="code" type="text/x-markdown"
+        backface="./img/catfight.gif" backface-filter="blur(1px) brightness(.4)">
+### データバインディングによる抽象化
+
+```html
+Search: <input ng-model="query">
+Sort by:
+<select ng-model="orderProp">
+  <option value="name">Alphabetical</option>
+  <option value="age">Newest</option>
+</select>
+
+<ul class="phones">
+  <li ng-repeat="phone in phones | filter:query | orderBy:orderProp">
+    <span>{{phone.name}}</span>
+    <p>{{phone.snippet}}</p>
+  </li>
+</ul>
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## しかし
+
+- Promise (などの Flow Control)
+  - Click のように離散的なイベントは扱えない
+- Data Bindings
+  - View と Model を結びつけるための局所的 Reactive
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 非同期とか気にせず<br>すべて同じように扱って<br>何でも Reactive に宣言したい
+
+そんな夢を叶えるモデルが、5年以上前からあります
+</script>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/backface-frp-with-rx.jpg"
+        backface-filter="blur(1px) brightness(.8)">
+# **FRP** with Reactive Extensions
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 関数型プログラミング<br>+<br>リアクティブプログラミング
+
+- 略して FRP (Functional Reactive Programming)
+- RP が関数型プログラミングを取り入れたもの
+- **Event** と **Behavior** という概念があったり (割愛)
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown">
+## FRP の GUI 的な代表格が<br>Reactive Extensions
+
+- 略して Rx ・ Microsoft .NET 方面の生まれ
+- Haskell 方面にある元祖? FRP と C# の LINQ の子供
+- JavaScript の主要な FRP ライブラリはこれの系統
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Reactive Extensions シリーズ
+
+- [ReactiveX/RxAndroid](https://github.com/ReactiveX/RxAndroid)
+- [ReactiveCocoa/ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
+- **[Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS)**
+- [neuecc/UniRx](https://github.com/neuecc/UniRx)
+- いずれも Reactive Extensions インスパイア系
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## どのようなライブラリなのか？
+
+- 全ての値や入力を非同期データストリームとして見なす
+- 入力に `map` や `filter` などの高階関数で処理を適用する
+- 非同期データストリームを中心に、その繋がりと処理を記述する
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown"
+        backface="./img/backface-clock.jpg"
+        backface-filter="blur(3px) brightness(.33)">
+## クライアントサイドの処理は<br>時間軸の変化に依存する
+
+- ユーザー入力イベント
+- ディスク I/O
+- ネットワーク I/O
+- タイマー処理
+
+*ref. [Functional Reactive Programming with Bacon.js](https://speakerdeck.com/dimituri/functional-reactive-programming-with-bacon-dot-js)*
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 非同期データストリーム<br><span style="font-size:50%">( すべてを時間軸に沿って要素が連続するリストにする )</span>
+
+![Fig](./img/fig-async-values.png)
+
+*ref. [Functional Reactive Programming with RxJS](http://www.slideshare.net/stefanmayer13/functional-reactive-programming-with-rxjs/18)*
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Events as List
+
+<img src="./img/fig-async-data-stream1.png">
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Error, Complete
+
+<img src="./img/fig-async-data-stream2.png">
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Single Value
+
+<img src="./img/fig-async-data-stream3.png">
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## From Array
+
+<img src="./img/fig-async-data-stream5.png">
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Async Value
+
+<img src="./img/fig-async-data-stream4.png">
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## ストリームをリストと見なすことで<br>関数型のイディオムを<br>活かせるようになった
+
+JavaScript は first-class function なので尚のこと
+</script>
+
+<script layout="bullets-invert" invert type="text/x-markdown"
+        backface="./img/rxjs.png" backface-filter="blur(3px) brightness(.4)">
+## RxJS
+
+Reactive Extensions 謹製 JavaScript 実装
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## セッション冒頭の<br>RxJS サンプルをおさらい
+
+データストリーム (Observable) をどう扱っているか
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+/*
+              +---------------+
+              | click.map(1)  |--->
+              +------+--------+
+
+              +------+--------+
+              | click.map(-1) |--->
+              +---------------+
+*/
+var plus  = Rx.Observable
+              .fromEvent(el, 'click').map(1);
+var minus = Rx.Observable
+              .fromEvent(el, 'click').map(-1);
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+/*
+      +--------------+
+      | click.map(1) |
+      +------+-------+
+             |
+             +---------->
+             |
+      +------+--------+
+      | click.map(-1) |
+      +---------------+
+*/
+var both = plus.merge(minus);
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+@type {Rx.Observable} curtValue
+```javascript
+/*
+      +--------------+
+      | click.map(1) |
+      +------+-------+
+             |           +------------+
+             +---------->|scan(0, add)|--->
+             |           +------------+
+      +------+--------+
+      | click.map(-1) |
+      +---------------+
+*/
+var curtValue = both.scan(0, function(acc, v) {
+                       return acc + v;
+                     });
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+@type {Rx.Observer} htmlSet
+```javascript
+/*
+               +-------------+
+           --->|innerHTML = v|
+               +-------------+
+*/
+var htmlSet = Rx.Observer.create(function(v) {
+  element.innerHTML = v;
+});
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+/*
+ +--------------+
+ | click.map(1) |
+ +------+-------+
+        |         +------------+    +-------------+
+        +-------->|scan(0, add)|--->|innerHTML = v|
+        |         +------------+    +-------------+
+ +------+--------+
+ | click.map(-1) |
+ +---------------+
+*/
+  var subscription = curtValue.subscribe(htmlSet);
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Rx.Observable の<br>インターフェースが中心になる
+
+Observable = 非同期データストリーム
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 絶望の数<br><span style="font-size:50%">(Observable Instance Methods)</span>
+
+*amb, and, asObservable, average, buffer, bufferWithCount, bufferWithTime, bufferWithTimeOrCount, catch | catchError, combineLatest, concat, concatAll, concatMap, concatMapObserver, connect, includes, controlled, count, debounce, debounceWithSelector, defaultIfEmpty, delay, delayWithSelector, dematerialize, distinct, distinctUntilChanged, do, doOnNext, doOnError, doOnCompleted, doWhile, elementAt, elementAtOrDefault, every, expand, filter, finally | ensure, find, findIndex, first, firstOrDefault, flatMap, flatMapObserver, flatMapLatest, forkJoin, groupBy, groupByUntil, groupJoin, ignoreElements, indexOf, isEmpty, join, jortSort, jortSortUntil, last, lastOrDefault, let | letBind, manySelect, map, max, maxBy, merge, mergeAll, min, minBy, multicast, observeOn, onErrorResumeNext, pairwise, partition, pausable, pausableBuffered, pluck, publish, publishLast, publishValue, share, shareReplay, shareValue, refCount, reduce, repeat, replay, retry, retryWhen, sample, scan, select, selectConcat, selectConcatObserver, selectMany, selectManyObserver, selectSwitch, sequenceEqual, single, singleOrDefault, skip, skipLast, skipLastWithTime, skipUntil, skipUntilWithTime, skipWhile, some, startWith, subscribe, subscribeOnNext, subscribeOnError, subscribeOnCompleted, subscribeOn, sum, switch | switchLatest, switchMap, take, takeLast, takeLastBuffer, takeLastBufferWithTime, takeLastWithTime, takeUntil, takeUntilWithTime, takeWhile, tap, tapOnNext, tapOnError, tapOnCompleted, throttleFirst, throttleWithTimeout, timeInterval, timeout, timeoutWithSelector, timestamp, toArray, toMap, toSet, transduce, where, window, windowWithCount, windowWithTime, windowWithTimeOrCount, withLatestFrom, zip*
+
+*via. [RxJS/observable.md at master · Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#observable-instance-methods)*
+</script>
+
+<!--
+<script layout="bullets-invert" type="text/x-markdown">
+## こんなかんじ ( ⁰⊖⁰)
+
+<blockquote class="twitter-tweet" lang="en"><p>Rx系のやつ、ひとつ見慣れれば方言の違いでだいたい読めるようになるけど、さもなくば死って感じでとても良い。</p>&mdash; あほむ@消費豚 (@ahomu) <a href="https://twitter.com/ahomu/status/568043565814714369">February 18, 2015</a></blockquote>
+</script>
+-->
+
+<script layout="bullets" type="text/x-markdown">
+Transforming.Map
+
+<img src="./img/fig-map.png">
+
+*via. [ReactiveX - Map operator](http://reactivex.io/documentation/operators/map.html)*
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+Rx.Observable.of(1, 2, 3)
+  .map(function(x) {
+    return x * x;
+  })
+  .subscribe(function(value) {
+    console.log(value);
+  });
+
+// => 1
+// => 4
+// => 9
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+Filtering.Filter
+
+<img src="./img/fig-filter.png">
+
+*via. [ReactiveX - Filter operator](http://reactivex.io/documentation/operators/filter.html)*
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+Rx.Observable.range(1, 7)
+  .filter(function (x) {
+    return x % 2 === 0;
+  })
+  .subscribe(function(value) {
+    console.log(value);
+  });
+
+// => 2
+// => 4
+// => 6
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+Combining.Merge
+
+<img src="./img/fig-merge.png">
+
+*via. [ReactiveX - Merge operator](http://reactivex.io/documentation/operators/merge.html)*
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+var a = Rx.Observable
+          .fromEvent(el,'click').map('a');
+var b = Rx.Observable
+          .fromEvent(el,'click').map('b');
+
+a.merge(b).subscribe(function(value) {
+  console.log('From merged: ' + value);
+});
+
+// => From merged a
+// => From merged b
+// => From merged b
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+Transforming.FlatMap
+
+<img src="./img/fig-flatMap.png">
+
+*via. [ReactiveX - FlatMap operator](http://reactivex.io/documentation/operators/flatmap.html)*
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+Rx.Observable.of(1, 2, 3)
+  .flatMap(function (x) {
+    return Rx.Observable.of(x, x*x);
+  })
+  .subscribe(function(value) {
+    console.log(value);
+  });
+
+// => 1
+// => 1
+// => 2
+// => 4
+// => 3
+// => 9
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+ErrorHandling.Catch
+
+<img src="./img/fig-catch.png">
+
+*via. [ReactiveX - Catch operator](http://reactivex.io/documentation/operators/catch.html)*
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+Rx.Observable.of(1, 2, 3)
+  .map(function (x) {
+    if (x === 2) throw new Error();
+    return x;
+  })
+  .catch(function (e) {
+    return Rx.Observable
+             .return(e instanceof Error);
+  })
+  .subscribe(function(value) {
+    console.log(value);
+  });
+
+// => 1
+// => true
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+Rx.Observable.of(1, 2, 3)
+  .map(function (x) {
+    if (x === 2) throw new Error();
+    return x;
+  })
+  .onErrorResumeNext(Rx.Observable.of(4, 5, 6))
+  .subscribe(function(value) {
+    console.log(value);
+  });
+
+// => 1
+// => 4
+// => 5
+// => 6
+```
+</script>
+
+<!--
+<script layout="code" type="text/x-markdown">
+```javascript
+var src = Rx.Observable.of(1, 2, 3)
+  .map(function (x) {
+    if (x === 2) throwOnce(); // 1度だけ throw する
+    return x;
+  })
+  .retry(2)
+  .subscribe(function(value) {
+    console.log(value);
+  });
+
+// => 1
+// => 1
+// => 2
+// => 3
+```
+</script>
+-->
+
+<!--
+<script layout="bullets" type="text/x-markdown">
+※ Scheduler Testについて
+</script>
+-->
+
+<script layout="bullets" type="text/x-markdown">
+## フローコントロールの用途で<br>Async.js と読み替える例
+
+- [RxJS/comparing.md at master · Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/mapping/async/comparing.md)
+- これを参考にすると、フローコントロール的には分かりやすい
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown">
+## 各 FRP ライブラリの概観
+
+- [RxJS](http://reactive-extensions.github.io/RxJS/) は ReactiveExtension 由来の正統派
+- [Bacon.js](https://baconjs.github.io/) は RxJS を参考にした独自コンセプト
+- [Kefir.js](https://pozadi.github.io/kefir/) は Bacon.js に似たAPIの軽量化版
+- [Meteor](https://www.meteor.com/) は Tracker.js を中心にサバクラで共有できる Reactive
+- [Elm](http://elm-lang.org/) は Haskell っぽいのから HTML/CSS/JS を生成する
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown"
+        backface="./img/bacon.jpg" backface-filter="blur(1px) brightness(.5)">
+## Bacon.js
+
+<blockquote style="opacity:1 !important">
+<p>One of the main motivators for reactive-bacon has been the **weirdness of RX with regard to "hot" and "cold" observables**. In reactive-bacon, there are no such things. The EventStream is always consistent with respect to time, so there will be no WTFs from that direction.</p>
+</blockquote>
+
+via. [raimohanska/reactive-bacon](https://github.com/raimohanska/reactive-bacon/blob/master/README.md#differences-to-rx)
+</script>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/spacecat.gif" backface-filter="blur(1px) brightness(.6)">
+## よくわからない人もいると思うので<br>デモを見てみましょう！
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown">
+## Demo 1 (RxJS)
+
+Canvas にドラッグ操作で線を描画する
+</script>
+
+<section layout>
+  <canvas id="canvas" width="640" height="480" style="background: white;cursor:pointer;"></canvas>
+  <script>
+    document.addEventListener('DOMContentLoaded', demo2);
+    function demo2() {
+      var currentRatio = 1;
+      talkie.ratio.onValue(function(v) {
+        currentRatio = v;
+      });
+
+      function getById(ident) {
+        return document.getElementById(ident);
+      }
+
+      var canvas  = getById('canvas');
+      var context = canvas.getContext("2d");
+      var cRect   = canvas.getBoundingClientRect();
+      var offsetX = cRect.left;
+      var offsetY = cRect.top;
+
+      var mousedown = Bacon.fromEventTarget(canvas, 'mousedown');
+      var mouseup   = Bacon.fromEventTarget(canvas, 'mouseup');
+      var mousemove = Bacon.fromEventTarget(canvas, 'mousemove');
+
+      var mover = mousedown.flatMap(function() {
+        var drag =  mousemove.takeUntil(mouseup);
+        return drag.scan({}, function(acc, event) {
+          return {
+            prev : acc.curt,
+            curt : event
+          }
+        }).skip(2);
+      });
+
+      mover.onValue(function(mm) {
+        var prevX = (mm.prev.clientX - offsetX) / currentRatio;
+        var prevY = (mm.prev.clientY - offsetY) / currentRatio;
+        var curtX = (mm.curt.clientX - offsetX) / currentRatio;
+        var curtY = (mm.curt.clientY - offsetY) / currentRatio;
+
+        context.beginPath();
+        context.moveTo(prevX,prevY);
+        context.lineTo(curtX,curtY);
+        context.lineWidth = 5;
+        context.stroke();
+        context.closePath();
+      });
+    }
+  </script>
+</section>
+
+<script layout="bullets" type="text/x-markdown">
+## RxJS でリライトしてみる
+
+<p style="text-align:center">
+[Draw Canvas (VanillaJS)](http://codepen.io/ahomu/pen/pvLQGJ?editors=001)
+<br>↓<br>
+[Draw Canvas (RxJS)](http://codepen.io/ahomu/pen/QwmJmX/?editors=001)
+</p>
+</script>
+
+<!--
+<script layout="bullets" type="text/x-markdown">
+## 普通に書くと？
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+// setup
+var canvas  = getById('canvas');
+var context = canvas.getContext("2d");
+var cRect   = canvas.getBoundingClientRect();
+var offsetX = cRect.left;
+var offsetY = cRect.top;
+
+// mutable state values
+var drawing = false;
+var prevX   = 0;
+var prevY   = 0;
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+// drag start
+canvas.addEventListener('mousedown', function(e) {
+  prevX = (e.clientX - offsetX);
+  prevY = (e.clientY - offsetY);
+  drawing= true;
+});
+
+// drag end
+canvas.addEventListener('mouseup', function(e) {
+  drawing = false;
+});
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+// draw path
+canvas.addEventListener('mousemove', function(e) {
+  if (!drawing) { return; }
+
+  var curtX = (e.clientX - offsetX);
+  var curtY = (e.clientY - offsetY);
+
+  context.beginPath();
+  context.moveTo(prevX, prevY);
+  context.lineTo(curtX, curtY);
+  context.lineWidth = 5;
+  context.stroke();
+  context.closePath();
+
+  prevX = curtX;
+  prevY = curtY;
+});
+```
+</script>
+-->
+
+<!--
+<script layout="code" type="text/x-markdown">
+```javascript
+// setup
+var canvas  = getById('canvas');
+var context = canvas.getContext("2d");
+var cRect   = canvas.getBoundingClientRect();
+var offsetX = cRect.left;
+var offsetY = cRect.top;
+
+// events
+var mousedown = Rx.Observable
+                  .fromEvent(canvas, 'mousedown');
+var mouseup   = Rx.Observable
+                  .fromEvent(canvas, 'mouseup');
+var mousemove = Rx.Observable
+                  .fromEvent(canvas, 'mousemove');
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+// mousedown から
+var mover = mousedown.flatMap(function() {
+
+  // mouseup まで有効な mousemove を drag とする
+  var drag = mousemove.takeUntil(mouseup);
+
+  // MousemoveEvent を prev と curt として保持
+  return drag.scan({}, function(acc, event) {
+    return {
+      prev : acc.curt,
+      curt : event
+    };
+  }).skip(1);
+
+});
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```javascript
+// Canvas に描画する
+mover.subscribe(function(mm) {
+  var prevX = mm.prev.clientX - offsetX;
+  var prevY = mm.prev.clientY - offsetY;
+  var curtX = mm.curt.clientX - offsetX;
+  var curtY = mm.curt.clientY - offsetY;
+
+  context.beginPath();
+  context.moveTo(prevX,prevY);
+  context.lineTo(curtX,curtY);
+  context.lineWidth = 5;
+  context.stroke();
+  context.closePath();
+});
+```
+</script>
+-->
+
+<script layout="bullets-invert" type="text/x-markdown">
+## Demo 2 (React + Bacon.js)
+
+ReactとBacon.jsを組み合わせて簡単なUIを作ってみる
+</script>
+
+<script layout="iframe" type="text/x-markdown">
+<iframe src="http://ahomu.github.io/demo-react-bacon/"></iframe>
+
+*スライドを送れなくなったひとは、<strong style="cursor:pointer">ココ</strong>を click してから操作してね*
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## ahomu/demo-react-bacon
+
+[https://github.com/ahomu/demo-react-bacon](https://github.com/ahomu/demo-react-bacon)
+</script>
+
+<script layout="iframe" type="text/x-markdown">
+<iframe src="http://ahomu.github.io/hn-react-rxjs/#/"></iframe>
+
+*スライドを送れなくなったひとは、<strong style="cursor:pointer">ココ</strong>を click してから操作してね*
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## ahomu/hn-react-rxjs
+
+[https://github.com/ahomu/hn-react-rxjs](https://github.com/ahomu/hn-react-rxjs)
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown">
+## 実際に書いてみた感想
+
+- Observable と Observer ごとにモジュール化するカンジ？
+- React + Flux の Store 周りにはいらない気がする
+- 割り切って UI コントロール用途で使うほうが幸せかも
+- Bacon.js 系のほうが昨今のフロントエンドには混ぜやすそう
+- ストリームの入出力をドキュメントで明示しないと大変
+- 高階関数の命名規則を考えたほうが可読性上がりそう
+</script>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/birddash.gif" backface-filter="blur(1px) brightness(.3)">
+# Conclusion
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown"
+        backface="./img/birddash.gif" backface-filter="blur(1px) brightness(.3)">
+## まとめ
+
+- RP はデータフローの関係性を宣言する
+- FRP は非同期データストリームを扱うモデル
+- RxJS は Observable を制すれば勝てる
+    - (自分は Bacon.js の EventStream/Property が好き)
+- クセはあるけど触れてみると発見があって面白い
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown"
+        backface="./img/birddash.gif" backface-filter="blur(1px) brightness(.3)">
+## FRP を知るオススメ文書
+
+- [Reactive Porn](http://steps.dodgson.org/b/2014/12/07/reactive-porn/) ( 最初に読むのを本当におすすめしたい )
+- [なぜリアクティブプログラミングは重要か。](http://d.hatena.ne.jp/pokarim/20101226)
+- [【翻訳】あなたが求めていたリアクティブプログラミング入門](http://ninjinkun.hatenablog.com/entry/introrxja)
+- [Functional Reactive Programming](http://tednaleid.github.io/frp_presentation/) (よくまとまってる)
+</script>
+
+<script layout="bullets-invert" type="text/x-markdown"
+        backface="./img/birddash.gif" backface-filter="blur(1px) brightness(.3)">
+## Bacon.js を知るオススメ文書
+
+- [Functional Reactive Programming and Bacon.js](http://latentflip.com/bacon-talk-realtimeconfeu/)
+- [Functional Reactive Programming with Bacon.js](https://speakerdeck.com/dimituri/functional-reactive-programming-with-bacon-dot-js)
+- [Bacon.js examples on CodePen](http://codepen.io/collection/jBEvG/)
+- [FAQ · baconjs/bacon.js Wiki](https://github.com/baconjs/bacon.js/wiki/FAQ)
+- [Bacon.js blog](http://baconjs.blogspot.jp/)
+</script>
+
+<section layout="bullets-invert"
+         backface="./img/birddash.gif" backface-filter="blur(1px) brightness(.3)">
+  <script async class="speakerdeck-embed" data-slide="1" data-id="f36f4e53478645958baf58e984bfebad" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+</section>
+
+<script layout="bullets-invert" type="text/x-markdown"
+        backface="./img/birddash.gif" backface-filter="blur(1px) brightness(.3)">
+# Talkie.js
+
+[ahomu/Talkie - github.com](https://github.com/ahomu/Talkie)
+
+Bacon.js で書かれたHTMLスライドライブラリ
+</script>
+
+<script layout="cover" invert type="text/x-markdown"
+        backface="./img/backface-back-cover.jpg" backface-filter="blur(1px) brightness(.9)">
+<h1 style="font-weight:bold;">Thank you</h1>
+
+- <a href="http://aho.mu" target="_blank" style="color: white !important; font-weight:bold;">aho.mu</a>
+- <a href="https://twitter.com/ahomu" target="_blank" style="color: white !important; font-weight:bold;">@ahomu</a>
+</script>
+
+<!--<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>-->
+<script src="./dist/highlight.min.js"></script>
+<script src="./dist/talkie.js"></script>
+<script>
+  var talkie  = Talkie({wide:false, control: true, progress: true});
+
+  talkie.next.plug(talkie.control.keydown('s'));
+  talkie.next.plug(talkie.control.keydown('n'));
+  talkie.prev.plug(talkie.control.keydown('a'));
+  talkie.prev.plug(talkie.control.keydown('p'));
+
+  window.Bacon = talkie.Bacon;
+
+  talkie.next.plug(Bacon.fromEventTarget(document.getElementById('next'), 'touchend'));
+  talkie.prev.plug(Bacon.fromEventTarget(document.getElementById('prev'), 'touchend'));
+
+  window.next  = function() { talkie.next.push(); };
+  window.prev  = function() { talkie.prev.push(); };
+  window.jump  = function(num) { talkie.jump.push(num); };
+</script>
+</body>
+</html>
