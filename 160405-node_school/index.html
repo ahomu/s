@@ -1,0 +1,729 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Client Side of なんちゃらfresh.tv</title>
+  <link rel="canonical" href="http://s.aho.mu/160405-node_school/">
+  <link rel="stylesheet" href="./dist/talkie.min.css">
+  <link rel="stylesheet" href="./dist/talkie-default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/monokai_sublime.min.css">
+</head>
+<body>
+
+<!-- put your slides -->
+
+<script layout="cover" invert h-left type="text/x-markdown"
+        backface="./img/bg-amebafresh.png"
+        backface-filter="brightness(.6)">
+
+# Client Side of <span style="font-size:80%;vertical-align:text-top">█████</span>fresh.tv
+
+2016.04.05 - Node学園 20時限目 [@ahomu](https://twitter.com/ahomu)
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## @ahomu です
+
+- 株式会社サイバーエージェント
+- Web クライアントサイドエンジニア
+- [http://aho.mu](http://aho.mu)
+- [Frontend Weekly キュレーター とか](https://frontendweekly.tokyo)
+- [HTML5 Experts 幽霊部員 とか](https://html5experts.jp/ahomu/)
+
+</script>
+
+<script layout="transparent" type="text/x-markdown">
+
+[![Frontend Weekly](./img/bg-fw.png)](https://frontendweekly.tokyo)
+<br><br><br>
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## アジェンダ
+
+- FRESH! について
+- SSR について
+- SPA について
+- Component について
+
+------
+
+今回の開発で取り組んだトピック 3点として SSR と SPA と Component を紹介します
+徐々に node っぽさがなくなっていきます
+
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+## [FRESH!](https://amebafresh.tv) について
+
+生放送配信プラットフォーム
+
+</script>
+
+<!--<script layout="title" type="text/x-markdown"-->
+        <!--backface="./img/bg-transfer-abema.png">-->
+
+<!--</script>-->
+
+<script layout="bullets" type="text/x-markdown">
+## 時節的なもの
+
+- 2015 年の春ごろに開発スタート
+- 紆余曲折 (イロイロ) あって、2016 年 1 月にリリース
+- 今回紹介する大枠の構成も 1 年くらい前に作られたもの
+- ライブラリのアップデートとかは可能な範囲で実施中
+
+</script>
+
+<!--<script layout="bullets" type="text/x-markdown">-->
+<!--## 手を動かすひとたち-->
+
+<!-- - Web クライアント 4 ~ 5 人-->
+<!-- - ネイティブクライアント 3 ~ 4 人ずつ-->
+<!-- - サーバ + DevOps 4 ~ 5 人-->
+<!-- - デザイナー 2 ~ 3 人-->
+
+<!--</script>-->
+
+<script layout="bullets" type="text/x-markdown">
+## Web クライアント開発者の<br>分担 ( 4〜5人 )
+
+- Desktop Web 担当
+- Mobile Web 担当
+- **Web Backend 担当** (ﾜｲ)
+- **SPA 基盤 担当** (ﾜｲ)
+- HLS Player 担当 (ﾜｲ)
+- 配信管理 Web UI 担当
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Web クライアントの構成要素
+
+- Node.js v4 + Express v4
+- **React v0.14 + Fluxible v1**
+- Video.js v4 + contrib-hls v0.17改
+- Socket.io v1.4
+- Babel v5, TypeScript v1.6
+- cssnext, csscomb, stylelint
+- mocha, power-assert, karma
+- browserify, gulp
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 開発環境の構成要素
+
+ - Amazon Web Services
+ - Microservices with Docker
+ - GitHub Enterprise
+ - Circle CI
+ - ChatOps with Slack
+ - New Relic, Speed Curve, Mackerel
+ - InVision, Pixate
+
+</script>
+
+<script layout="transparent" type="text/x-markdown">
+
+[![FRESH の web まわりのアーキテクチャ](./img/fig-architecture.jpg)](https://speakerdeck.com/stormcat24/next-fresh-applications-with-amazon-ecs?slide=23)
+
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+## SSR について
+
+Server Side Rendering
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 初期のモチベーション
+
+1. Angular v1 が肌に合わなかったので道具を変えたい
+2. コンポ−ネントライブラリなら何でもいいんだけど
+3. deku とか Riot.js よりはエコシステム成熟してそう
+4. よし、**React でサーバーサイドレンダリング**しよう
+5. ES Proposals や Observable は見送り ([副産物は作った](https://github.com/ahomu/Loxe))
+
+------
+
+テンプレートのサバクラ二重管理を避けたいのは言わずもがな
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## SSR の真価は SEO ではない
+
+- 2重テンプレートを避けつつ、**コンテンツの表示を高速化したい**
+- JS のみでレンダリングすることのペナルティは少なくない
+  - メインコンテンツの[クリティカルレンダリングパス](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/)が長くなる
+  - レンダリング前に JS のロードと実行、API からのデータ取得が必要
+  - 初期データをHTMLに埋めても、JS の初期化が遅延しない保証はない
+- SSR なら CSSOM と DOM が構築できれば JS を待たず表示できる
+- ページ全体の SSR に時間かかるなら、一部分を非同期化すればOK
+- ソーシャル流入が多くなりがち、初期表示が遅いことは機会損失
+
+------
+
+API アクセスはインターナルなので、クライアントからXHR投げるよりはやや低コスト
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Isomorphic なパーツ選び
+
+- **Flux** : [yahoo/fluxible](https://github.com/yahoo/fluxible/tree/master/packages/fluxible)
+  - 必要なパーツの一通りが詰まったライブラリ群 ( 細かい話は[ココ](https://havelog.ayumusato.com/develop/javascript/e675-spa_and_server_rendering_with_fluxible.html) )
+- **Rendering** : [facebook/react](https://github.com/facebook/react)
+  - みんなだいすき Virtual DOM 生成器 + レンダラ
+- **Routing** : [yahoo/fluxible-router](https://github.com/yahoo/fluxible/tree/master/packages/fluxible-router)
+  - pushState や History API 、スクロール制御もあって優秀
+- **Data Loading** : [yahoo/fluxible-plugin-fetchr](https://github.com/yahoo/fluxible/tree/master/packages/fluxible-plugin-fetchr) + [mzabriskie/axios](https://github.com/mzabriskie/axios)
+  - [fetchr](https://github.com/yahoo/fetchr) ( 次で説明 ) + HTTP クライアントは Promise ベースの axios
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+
+fetchr はサーバ用の Service Middleware と<br>
+クライアント用の Proxy Request を提供
+
+![fetchrのService](./img/fig-fetchr-service.png)
+<br><br><br>
+</script>
+
+<!--<script layout="code" type="text/x-markdown">-->
+<!--```typescript-->
+<!--// クラサバ共通の Service 呼び出し処理-->
+<!--let service = context.service;-->
+<!--let resp = await service.read<Program>('Program', params);-->
+
+<!--// サーバ側にある Service のデータ取得処理-->
+<!--let ProgramService = ServiceFactory.create({-->
+  <!--// GET リクエスト-->
+  <!--read(req, src, params, options, callback) {-->
+    <!--const apiClient = new ApiClient();-->
+    <!--apiClient-->
+      <!--.get<ApiResponse<Program[]>>('/programs', {-->
+        <!--params: params-->
+      <!--})-->
+      <!--.then(resp => callback(null, resp))-->
+      <!--.catch(callback);-->
+  <!--}-->
+<!--});-->
+<!--```-->
+<!--</script>-->
+
+<script layout="bullets" type="text/x-markdown">
+- `actions/` : Fluxible の Action
+- `components/` : React の Component
+- `stores/` : Fluxible の Store
+- `routes/` : URL ごとの Route 処理
+- `server/` : サーバー固有の処理
+  - `controllers/` : OAuth など Routr 外のルーティング
+  - `handlers/` : Express にくわせるミドルウェア
+  - `services/` : Fetchr の Service
+- `app.js` : サバクラ共通 Fluxible アプリケーション本体
+- `client.js` : browserify 実行時のブートストラップ
+- `server.js` : node 実行時のブートストラップ
+<br><br>
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Flux 周辺の雰囲気
+
+- Component はスマート UI 気味に作り、必要に応じて改修
+- 他のコンポーネントと共有しない UI の状態は state 使う
+- Context 注入を使って、props バケツリレーの一部を避けてる
+- Dispatcher 隠蔽型でふつうに Action と Store がある
+- EventEmitter 的だけど、べつに困ることはない
+
+</script>
+
+<script layout="code" type="text/x-markdown">
+```html
+<Document> <!-- サーバで HTML 全体を返すときだけ動作 -->
+  <Application> <!-- サバクラ共通ルートコンテナ -->
+
+    <!-- ★ UI をもつコンポーネント -->
+    <Header />
+    <PageHandler /> <!-- 画面遷移ごとのページ差し替え -->
+    <Footer />
+
+    <!-- ★ UI をもたないコンポーネント -->
+    <Metadata /> <!-- 動的な <meta> <link> の書き換え -->
+    <ScrollHandler /> <!-- 画面遷移ごとのスクロール制御 -->
+
+  </Application>
+</Document>
+
+```
+</script>
+
+<!--<script layout="code" type="text/x-markdown">-->
+<!--Output HTML-->
+
+<!--```html-->
+<!--<html> &lt;!&ndash; 最初だけサーバーから返す &ndash;&gt;-->
+  <!--<head>-->
+    <!--&lt;!&ndash; <meta> 類は画面遷移ごとに書き換え &ndash;&gt;-->
+    <!--&lt;!&ndash; CSS とか &ndash;&gt;-->
+  <!--</head>-->
+  <!--<body>-->
+  <!--<div id="app"> &lt;!&ndash; <Application> のマウント先 &ndash;&gt;-->
+    <!--<header>FRESH!</header>-->
+    <!--<main>&lt;!&ndash; 画面遷移ごとに差し替わるコンテンツ &ndash;&gt;</main>-->
+    <!--<footer>Copyright 2016...</footer>-->
+  <!--</div>-->
+  <!--&lt;!&ndash; JavaScript とか &ndash;&gt;-->
+<!--</html>-->
+
+<!--```-->
+<!--</script>-->
+
+<script layout="code" type="text/x-markdown">
+```js
+let app = new Fluxible({ component : Application });
+let ctx = app.createContext();
+
+// Route 処理 ( API からのデータ取得など ) を実行
+await ctx.executeAction(navigateAction, {url: req.url});
+
+// <Application> の実行 & HTML 文字列化
+let root = renderToString(createElementWithContext(ctx));
+
+// クライアントに提供するデータの serialize
+let expose = serialize(app.dehydrate(ctx));
+
+// <Document> の実行 & HTML 文字列のレスポンス
+res.send(renderToStaticMarkup(createElement(Document, {
+  root     : root,
+  $$expose : `window.$$expose=${expose};`,
+  context  : ctx.getComponentContext()
+})));
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+```js
+let app = new Fluxible({ component : Application });
+
+// サーバから提供されたデータを deserialize
+let context = await app.rehydrate(window.$$expose)
+
+// <Application> を指定された要素にマウントして実行
+let mountNode = document.getElementById('app');
+let root = createElementWithContext(context);
+ReactDOM.render(root, mountNode);
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Isomorphic の細かい話は<br>[ブログに書いた](https://havelog.ayumusato.com/develop/javascript/e682-universal_architecture_tips.html)
+
+- コンフィグのクラサバ横断共有
+- ユーザーエージェントの評価
+- ブラウザオブジェクトに触れるコード
+- `<head>` への操作または副作用の管理
+- などなど
+
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+## SPA について
+
+Single Page Application
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## SPA の メリデメ
+
+- メリット
+  - なんとなく画面遷移が速くなる
+  - URL をまたいだ表現が可能になる
+- デメリット
+  - **ブラウザナビゲーションを破壊してしまう**
+  - まあまあ面倒なので半端にやると痛い目に
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## その Web サイト は<br>本当に SPA にするべき？
+
+- Web サイト的な情報設計/デザインで SPA ってどうなの
+  - ユーザー操作の大半が URL 遷移なら SSR だけでもいいのでは
+  - 逆に Web アプリ的なら、SPA は必要だが SSR は不要なのでは
+- ブラウザのナビゲーションを破壊するなら責任をもって
+  - スクロール制御や前画面のキャッシュは車輪の再発明に等しい
+  - クロスブラウザで完璧な個別実装はそれなりに面倒
+
+-----
+
+invision みたいにイニシャルがクッソ重くなりすぎるなら考えモノだけど
+
+Progressive Web Apps とかサイッコーな web 体験を追求するのはもちろん良いけど
+現実のギョーム的には、現場がどのくらいの複雑性を抱え込めるのかは考えたほうが良い
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## ではなぜ SPA しているのか
+
+**PinP** ( Picture in Picture ) が要件にあったから
+
+![Picture in Picture の例、画面隅で動画が再生され続ける](./img/shot-p-in-p.png)
+
+-----
+
+紆余曲折あって、PinPはなくなってしまったのですが、今はSPAだけ生きている感じです。
+</script>
+
+<script layout="code" type="text/x-markdown">
+## ルーティングの後に画面更新
+
+画面遷移の開始と同時にページが真っ白とかは NG<br>
+処理中は現状を残して、完了してから表示更新
+
+```js
+// 架空のコード、こうあってほしい雰囲気
+router.addEventListener('changeRoute', () => {
+  await justRouting(location.path);
+  updatePageContent();
+});
+
+
+
+
+```
+
+-----
+
+これやるんなら、処理中にユーザーから別のオーダーがあったら、次の操作はキャンセルすべきです。
+</script>
+
+<script layout="code" type="text/x-markdown">
+## ルーティングの後にスクロール
+
+fluxible-router は画面遷移の開始とスクロール制御が同時<br>
+ルーティングには非同期処理が入るので先走り甚だしい
+
+```js
+// 架空のコード、こうあってほしい雰囲気
+router.addEventListener('changeRoute', () => {
+  await justRouting(location.path);
+  updatePageContent();
+  adjustScroll();
+});
+
+
+
+```
+</script>
+
+
+<script layout="code" type="text/x-markdown">
+## ブラウザバックは即座に表示
+
+ブラウザバックなら情報は既知であるべき<br>
+Routing 処理が発生しても fetch はスキップ
+
+```js
+// ルーティング中に popState とキャッシュを確認して分岐
+Promise
+  .all(isPopStateAndCached(context) ? [/* noop */] : [
+    executeAction(fetchFooFromApi),
+    executeAction(fetchBarFromApi)
+  ])
+  .then(() => done())
+
+
+```
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 社内の後期型 SSR + SPA 勢
+
+- [7gogo](https://7gogo.jp/) ( ホリ█モンと始めたアレ ) : Pure Flux で Isomorphic
+- 某巨大サービス ( システム刷新中 ) : Redux で Isomorphic
+
+たぶんそのうち[中](https://twitter.com/1000ch)の[人](https://twitter.com/herablog)がどこかでアウトプットする
+
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+## Component について
+
+HTML/CSS/JavaScript のパッケージ単位
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## FRESH! における分類
+
+- **Page** : Store から状態を受け取る
+- **Project** : プロジェクトのロジックを含む
+- **UI** : 単機能のプリミティブな要素
+- **Utils** : 文字校正や副作用管理のユーティリティ
+
+</script>
+
+<script layout="transparent" type="text/x-markdown">
+
+![Componentの分類と親子関係](./img/fig-components.jpg)
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## Component 内のファイル構成
+
+- `Component/index.js` : コンポーネントの JSX
+- `Component/index.css` : コンポーネントの CSS
+- `Component/index.sg.js` : コンポーネントのスタイルガイド
+- `Component/index.test.js` : コンポーネントのテスト
+- `Component/SubComponent.js` : サブコンポーネントの JSX
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## components/UI
+
+"再利用性を考慮し、独立したコンポーネントとして存在できるようにデザインします。例えば、[Components · Bootstrap](http://getbootstrap.com/components/) に見られるプリミティブなコンポーネントを指します。"
+
+</script>
+
+<script layout="code" type="text/x-markdown">
+```html
+<!-- 画像プロキシのパスを足したり、整形パラメータを付与 -->
+<Image src="/i.png" width="30" height="20" crop />
+
+<!-- グリッドレイアウトをアレするやつ -->
+<Grid align="center" valign="middle"> ... </Grid>
+
+<!-- SVG アイコンの <use> 参照や PNG fallback を提供 -->
+<Icon name="ameba" title="アメーバくん" color="green" />
+
+<!-- props で状態制御するための Video.js ラッパー -->
+<Video src="/playlist.m3u8" volume="0.8" autoplay />
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## components/Project
+
+"プロジェクト固有のレイヤーであり、いくつかの UI と、それに該当しない要素によって構成されます。例えば、チャンネルリストやユーザープロフィールなどがそれに該当します。このレイヤーでは UI の定義をオーバーライドすることを許容します。"
+
+</script>
+
+<script layout="code" type="text/x-markdown">
+```html
+<!-- 番組リスト -->
+<ProgramList programs={programs} theme="red" vertical />
+
+<!-- フォローボタン -->
+<FollowButton channel={channel} size="lg" />
+
+<!-- <Video> をインフィード再生 -->
+<InFeedPlayer program={program} />
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## components/Page
+
+"URL と対応するページのレイヤーであり、UI・Project を組み合わせて完結させるか、必要であればページ固有のスタイルを追加します。このレイヤーでは、UI・Project の定義をオーバーライドすることを許容します。"
+
+</script>
+
+<script layout="code" type="text/x-markdown">
+```html
+<Page theme="darkestEx">
+  <section className="u-mt40 u-mrA u-mlA u-wContainer">
+    <Heading className="u-mb40">サインアップ</Heading>
+    <div className="u-mrA u-mlA u-mb60 u-wForm">
+      <ProfileForm submitLabel="FRESH! をはじめる"
+                   defaultValues={socialProfile}
+                   currentValues={profileInputs}
+                   errors={profileErrors}
+                   onSubmit={onSubmit} />
+    </div>
+  </section>
+</Page>
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## components/Utils
+
+"特定のUIを表現するのではなく、テキストの整形や、タイムスタンプからの相対時間の表示、URL文字列に対する自動リンクなどのユーティリティが該当します。"
+
+</script>
+
+<script layout="code" type="text/x-markdown">
+
+```html
+<!-- 文字列内の URL をリンクにする -->
+<AutoLink>{description}</AutoLink>
+
+<!-- 相対時間の表示 -->
+<RelativeTime datetime={program.onAirAt} />
+
+<!-- 長い文字列を指定した行数の末尾で ... にして切る -->
+<LineClamp line={3}>{longdesc}</LineClamp>
+```
+</script>
+
+
+<script layout="code" type="text/x-markdown">
+
+[SUIT CSS naming conventions](https://github.com/suitcss/suit/blob/master/doc/naming-conventions.md) をベースに<br>
+[Chainable BEM modifiers](http://webuild.envato.com/blog/chainable-bem-modifiers/) を Mix ( [@pocotan001](https://twitter.com/pocotan001) 談 )
+
+```html
+<div class="Component -modifier is-stateType">
+  <div class="Component__subComponent -modifier">
+    ...
+  </div>
+</div>
+```
+
+</script>
+
+<script layout="code" type="text/x-markdown">
+
+つまり、CSS はこうなる
+
+```css
+/* Component */
+.Component { }
+.Component.-modifier { }
+
+/* Subcomponent */
+.Component__subComponent { }
+.Component__subComponent.-modifier { }
+
+/* State */
+.Component.is-stateType { }
+```
+-----
+
+大文字から始まるコンポーネント名のクラス付与
+副次的に devtools から眺めるだけでも何のコンポーネントか特定しやすい感
+</script>
+
+<!--<script layout="code" type="text/x-markdown">-->
+
+<!--1要素に付き1コンポーネント(1クラス)の制約<br>-->
+<!--カスケーディングをシンプルにする-->
+
+<!--```html-->
+<!--&lt;!&ndash; NG &ndash;&gt;-->
+<!--<button class="Grid Button -center"> ... </button>-->
+
+<!--&lt;!&ndash; OK &ndash;&gt;-->
+<!--<div class="Grid -center">-->
+  <!--<button class="Button"> ... </button>-->
+<!--</div>-->
+<!--```-->
+<!--</script>-->
+
+<script layout="code" type="text/x-markdown">
+
+レイアウト情報の所有は再利用性を妨げるので<br>
+使用時にユーティリティクラス ( u-*** )を併用
+
+```html
+<Panel className="u-mb28">
+  <p className="u-tSm-dark u-mb8">
+    <RelativeTime className="u-vaM u-mr12"
+                  datetime={program.onAirAt} />
+    <Icon className="u-mr4" name="watch" />
+    <span className="u-vaM">
+      <FormattedNumber value={program.viewCount} />
+    </span>
+  </p>
+  <p><AutoLink>{program.description}</AutoLink></p>
+</Panel>
+```
+
+-----
+
+padding はともかく、margin とかは外部環境のレイアウトなので。
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## FRESH! における<br>コンポーネント設計の心得
+
+- 関数合成のように単機能を組み合わせること
+- 求められる再利用性の程度を明確にすること
+- 規模に応じた簡潔なレイヤリングをもつこと
+- `shouldComponentUpdate` を信じて細分化すること
+- [@pocotan001](https://twitter.com/pocotan001) と議論すること
+
+</script>
+
+<script layout="bullets" invert type="text/x-markdown"
+        backface="./img/bg-atomic-design.png"
+        backface-filter="brightness(.25)">
+## [abema.tv](https://abema.tv) と [Atomic Design](http://patternlab.io/about.html)
+
+Functional Stateless Components をうまく使ってる風<br>
+たぶん、そのうち[中の人](https://twitter.com/ygoto3_)がどこかでアウトプットする
+
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+## まとめ
+
+</script>
+
+<script layout="bullets" invert type="text/x-markdown">
+## エッジな構成を運用した学び
+
+- SSR は最高です
+- SPA は向き不向きあります
+- コンポーネントの設計だいじ
+
+</script>
+
+<script layout="bullets" invert type="text/x-markdown">
+## 食べ残されたトピック :P
+
+- **Web 技術で HLS を再生することへの<span style="color:red;font-weight:bold;">呪詛</span>**
+- コンポーネント時代のセマンティクス管理
+- 超速でデータが流れる Flux のパフォチュー
+- Babel と TypeScript が混在する[過渡期構成](https://havelog.ayumusato.com/develop/javascript/e665-ts_jsx_flux.html)の辛み
+
+</script>
+
+<script layout="cover" invert type="text/x-markdown"
+        backface="./img/bg-back-cover.jpg"
+        backface-filter="brightness(.9)">
+
+<h1 style="font-weight:bold;">Thank you</h1>
+
+- <a href="http://aho.mu" target="_blank" style="color: white !important; font-weight:bold;">aho.mu</a>
+- <a href="https://twitter.com/ahomu" target="_blank" style="color: white !important; font-weight:bold;">@ahomu</a>
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+<script src="./dist/talkie.min.js"></script>
+<script>
+  var talkie = Talkie({wide: false, notransition: true});
+
+  talkie.key('s').subscribe(talkie.next$);
+  talkie.key('n').subscribe(talkie.next$);
+  talkie.key('a').subscribe(talkie.prev$);
+  talkie.key('p').subscribe(talkie.prev$);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    talkie.changed.subscribe(function(current) {
+//    console.clear();
+      // print presenter notes
+      console.info(talkie.notes[current.getAttribute('page')]);
+    });
+  });
+</script>
+</body>
+</html>
