@@ -1,0 +1,306 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>FRESH! と AbemaTV の WAI-ARIA 事例</title>
+  <link rel="canonical" href="http://s.aho.mu/160809-a11y_informal_study/">
+  <link rel="stylesheet" href="./dist/talkie.min.css">
+  <link rel="stylesheet" href="./dist/talkie-default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/monokai_sublime.min.css">
+</head>
+<body>
+
+<!-- put your slides -->
+
+<script layout="cover" invert h-left type="text/x-markdown"
+        backface="./img/bg-title5.jpg"
+        backface-filter="brightness(.5)">
+
+# WAI-ARIA in FRESH! & AbemaTV
+
+2016.08.09 - a11y 社内勉強会 [@ahomu](https://twitter.com/ahomu)
+
+</script>
+
+<script layout="title" type="text/x-markdown">
+## **Machine readability**<br>okay..., okay...
+</script>
+
+<script layout="code" type="text/x-markdown">
+### 読める
+
+```html
+<div class="progress-percentage">66%</div>
+```
+<br>
+</script>
+
+<script layout="code" type="text/x-markdown">
+### 読めない
+
+```html
+<div class="progress-container">
+  <div class="progress-bar" style="width: 66%"></div>
+</div> 
+```
+<br>
+</script>
+
+<script layout="code" type="text/x-markdown">
+### いつの間にか<br>100%になってるかもしれない
+
+```html
+<div class="progress-container">
+  <div class="progress-bar" style="width: 100%">100%</div>
+</div> 
+```
+<br>
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+### **"状態"** が変化する<br>イマドキな Web の<br>**アクセシビリティ**を<br>改善する実装
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## @ahomu です
+
+- <del>株式会社サイバーエージェント</del>
+- AbemaTV 株式会社にいます
+- Web フロントエンドエンジニャー
+- [http://aho.mu](http://aho.mu)
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## アジェンダ
+
+- WAI-ARIA
+- ARIA なタブ
+- ARIA なドロワー
+
+</script>
+
+<script layout="bullets" invert type="text/x-markdown">
+## Problems
+
+- 昨今の HTML は静的ではなく、頻繁に変化がある
+- 変化、進捗は視覚情報で知覚させることが前提にある
+- 状態に関する HTML の表現力が追いついていない
+
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+## HTML にとって<br>Machine Readable は<br>実は難しい
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+## WAI-ARIA
+
+Accessible Rich Internet Applications
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## WAI-ARIA
+
+- 初出 [W3C Working Draft 4 February 2008](https://www.w3.org/TR/2008/WD-wai-aria-20080204/)（ 8年前!! ）
+- UI のセマンティクスを「役割・状態・特性」として提供
+- `role="main"`、`role="search"` とかご存じですよね
+- `aria-hidden`、`aria-selected` とか（ｒｙ
+</script>
+
+<script layout="code" type="text/x-markdown">
+## &lt;progress&gt; の ARIA 例
+
+```html
+<!-- ネイティブな progress -->
+<progress value="70" min="0" max="100">70 %</progress>
+
+<!-- ARIA な progress -->
+<div role="progressbar" aria-valuenow="70"
+     aria-valuemin="0" aria-valuemax="100">70 %</div>
+```
+<br>
+</script>
+
+<script layout="title" type="text/x-markdown">
+## Examples
+
+モノを見た方が早いので例示します
+</script>
+
+<script layout="code" type="text/x-markdown">
+### case1. [FRESH!](https://abemafresh.tv/)内で絶滅危惧種のタブ UI
+
+![タブUIの使用箇所](./img/fig-tabs.png)
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+### タブ UI: [react-a11y-tabs](http://codepen.io/ahomu/pen/qNQqak/?editors=0010)
+
+<iframe height='300' scrolling='no' src='//codepen.io/ahomu/embed/qNQqak/?height=300&theme-id=11914&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='http://codepen.io/ahomu/pen/qNQqak/'>react-a11y-tabs-updated</a> by Ayumu Sato (<a href='http://codepen.io/ahomu'>@ahomu</a>) on <a href='http://codepen.io'>CodePen</a>.
+</iframe>
+</script>
+
+<script layout="code" type="text/x-markdown">
+### HTML
+
+```html
+<ul role="tablist">
+  <li role="presentation">
+      <button role="tab" tabindex="0"
+              aria-selected="true" aria-controls="foo">
+        1st Panel
+      </button>
+  </li>
+  <!-- <li> 繰り返し... -->
+</ul>
+<div role="tabpanel" id="foo" aria-hidden="false">
+  <h2>1st Panel</h2>
+</div>
+<!-- <div> 繰り返し... -->
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+### JSX
+
+```jsx
+<TabList
+  selectedIndex={selectedIndex}
+  onChangeSelected={this.onChangeSelected.bind(this)}>
+  <Tab controlsFor="foo">1st Panel</Tab>
+  { /* <Tab> 繰り返し... */ }
+</TabList>
+<TabPanel id="foo" selected={selectedIndex === 0}>
+  <h2>1st Panel</h2>
+</TabPanel>
+{ /* <TabPanel> 繰り返し... */ }
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## タブ UI のポイント
+
+- `role="tablist|tab|tabpanel"` を使い分ける
+- `aria-hidden` で表示状態を示す
+- `aria-selected` で選択状態を示す
+- `aria-controls` で操作対象を示す
+- `tabindex` でフォーカスを制御する
+</script>
+
+<script layout="code" type="text/x-markdown">
+### case2. [AbemaTV 視聴面](https://abema.tv/now-on-air/abema-news)で多用されるドロワー
+
+![ドロワーUIの使用箇所](./img/fig-drawer.png)
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+### ドロワー UI: [react-a11y-drawer](http://codepen.io/ahomu/pen/jAQymb/?editors=0110)
+
+<iframe height='300' scrolling='no' src='//codepen.io/ahomu/embed/jAQymb/?height=300&theme-id=11914&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='http://codepen.io/ahomu/pen/jAQymb/'>react-a11y-drawer</a> by Ayumu Sato (<a href='http://codepen.io/ahomu'>@ahomu</a>) on <a href='http://codepen.io'>CodePen</a>.
+</iframe>
+</script>
+
+<script layout="code" type="text/x-markdown">
+### HTML
+
+```html
+<button aria-controls="navigation" aria-expanded="true">
+  Hide Navigation
+</button>
+<div id="navigation" class="Drawer" tabindex="0"
+     role="navigation" aria-hidden="false">
+  <ul>
+    <li><a href="#foo">Foo</a></li>
+    <li><a href="#bar">Bar</a></li>
+    <li><a href="#baz">Baz</a></li>
+  </ul>
+</div>
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+### CSS
+
+```css
+[aria-hidden="true"] { visibility: hidden; }
+
+.Drawer { /* 色々省略 */
+  transform: translate(300px, 0);
+  will-change: transform;
+}
+.Drawer[aria-hidden="false"] { /* 出るとき */
+  transform: translate(0, 0);
+  transition: transform 0.3s linear;
+}
+.Drawer[aria-hidden="true"] { /* 隠れるとき */
+  transition: transform 0.3s linear,
+              visibility 0s linear 0.3s;
+}
+
+```
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## ドロワー UI のポイント
+
+- `aria-expanded` で制御対象の開閉状態を示す
+- `aria-hidden` と transition をうまく連動させる
+- `visibility` の transition にディレイをつける
+</script>
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/bg-title6.jpg"
+        backface-filter="brightness(.5)">
+## まとめ
+</script>
+
+<script layout="bullets" invert type="text/x-markdown">
+## Try! WAI-ARIA
+
+- イマドキの Web は HTML と状態が変化する
+- WAI-ARIA で UI のセマンティクスを伝えられる
+- 設計に慣れれば、そこまで負担じゃなくなる
+- データバインディング最高!!
+- WAI-ARIA をサポートした既製品を使うのもアリ
+</script>
+
+<script layout="bullets" invert type="text/x-markdown">
+## 参考資料
+
+- [Accessible Rich Internet Applications (WAI-ARIA) 1.1 日本語訳](https://momdo.github.io/wai-aria-1.1/)
+- [Web アプリケーションと ARIA の FAQ - Accessibility | MDN](https://developer.mozilla.org/ja/docs/Web/Accessibility/ARIA/Web_applications_and_ARIA_FAQ)
+- [Practical ARIA Examples](http://heydonworks.com/practical_aria_examples/)
+- [Start Building Accessible Web Applications Today](https://egghead.io/courses/start-building-accessible-web-applications-today)
+</script>
+
+<script layout="cover" invert type="text/x-markdown"
+        backface="./img/bg-back-cover.jpg"
+        backface-filter="brightness(.9)">
+
+<h1 style="font-weight:bold;">Thank you</h1>
+
+- <a href="http://aho.mu" target="_blank" style="color: white !important; font-weight:bold;">aho.mu</a>
+- <a href="https://twitter.com/ahomu" target="_blank" style="color: white !important; font-weight:bold;">@ahomu</a>
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+<script src="./dist/talkie.min.js"></script>
+<script>
+  var talkie = Talkie({wide: false, notransition: true});
+
+  talkie.key('s').subscribe(talkie.next$);
+  talkie.key('n').subscribe(talkie.next$);
+  talkie.key('a').subscribe(talkie.prev$);
+  talkie.key('p').subscribe(talkie.prev$);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    talkie.changed.subscribe(function(current) {
+//    console.clear();
+      // print presenter notes
+      console.info(talkie.notes[current.getAttribute('page')]);
+    });
+  });
+</script>
+</body>
+</html>
