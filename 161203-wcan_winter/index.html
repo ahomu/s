@@ -1,0 +1,308 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>HTMLでスライドを作れる Talkie.js のご紹介</title>
+  <link rel="stylesheet" href="./dist/talkie.min.css">
+  <link rel="stylesheet" href="./dist/talkie-default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/monokai_sublime.min.css">
+  <style>
+    [layout] {
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout] h1, [layout] h2, [layout] h3, [layout] h4, [layout] h5, [layout] h6 {
+      font-weight: bold;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<!-- put your slides -->
+
+<template layout="title" invert type="text/x-markdown"
+          backface="./img/1.jpg"
+          backface-filter="blur(1px) brightness(.5)">
+# <span style='font-family: "NotoSansCJKjp-Medium","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif'>HTMLでスライドを作れる Talkie.js のご紹介</span>
+
+2016.12.03 - WCAN Winter 2016 LT [@ahomu](https://twitter.com/ahomu)
+</template>
+
+<script layout="bullets" type="text/x-markdown">
+## @ahomu です
+
+- 佐藤 歩 / Ayumu Sato
+- [aho.mu](http://aho.mu)
+- 株式会社 [AbemaTV](https://abema.tv/) の Web エンジニア
+- 名古屋と渋谷を往復する Praying Manager 🙏
+</script>
+
+<script layout="title" type="text/x-markdown">
+## さてみなさん
+</script>
+
+<script layout="title" type="text/x-markdown">
+## 明日の社内勉強会で<br>ちょっと喋ってよ
+
+ちょっと？？？
+</script>
+
+<script layout="title" type="text/x-markdown">
+## 今晩の勉強会で<br> LT やりませんか？
+
+今晩？？？
+</script>
+
+<script layout="title" type="text/x-markdown">
+## 急な無茶振り、ありますよね？
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+### 明日までにとか今晩までにとか早くスライドを<br>作らなくちゃいけないけど Keynote とか<br>Power Point 使ってレイアウトするの面倒だし<br>そんな暇あったら中身作りと発声練習に時間を<br>使いたいですよね？？？？？？？？？
+</script>
+
+<!--
+<script layout="title" type="text/x-markdown">
+### というときに役立つ HTML や Markdown で<br>スライドを手早く作れるツールの紹介です
+</script>
+-->
+
+<script layout="bullets" invert type="text/x-markdown"
+        backface="./img/2.jpg"
+        backface-filter="blur(1px) brightness(.3)">
+## Talkie.js とは
+
+- HTML/Markdown で書けるスライドツール
+- 自分が手早く資料を作るために作成
+- [配布リポジトリは ahomu/Talkie](https://github.com/ahomu/Talkie)
+- [Reveal.js](https://github.com/hakimel/reveal.js) とかと同類（ご存じの人向け）
+- Google Slide って高機能ですよね...
+</script>
+
+<!--
+<script layout="title" type="text/x-markdown">
+## Power Point とか<br> Keynote じゃないの？
+
+Keynote の master slides も育ててあるんですけどね...？
+</script>
+-->
+
+<script layout="bullets" type="text/x-markdown">
+## HTML スライドのメリット
+
+- テキストべースでささっと作れる
+- 必要なら HTML/CSS/JavaScript で無茶できる
+- アップロードすればブラウザですぐに見られる
+- 修正があってもアップロードし直すだけ
+</script>
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/3.jpg"
+        backface-filter="blur(1px) brightness(.5)">
+## Talkie.js の使い方
+</script>
+
+<script layout="code" type="text/x-markdown">
+### 基本の書き方 in HTML
+
+```html
+<section layout="title">
+  <h1>これはタイトルです</h1>
+  <p>サブタイトルとかウンチクとかウンウン...</p>
+</section>
+
+<section layout="bullets">
+  <h2>これは箇条書きです</h2>
+  <ul>
+    <li>りんご</li>
+    <li>みかん</li>
+    <li>どりあん</li>
+  </ul>
+</section>
+```
+</script>
+
+<script layout="code" type="text/x-markdown">
+### 基本の書き方 in Markdown
+
+```html
+<tempalte layout="title" type="text/x-markdown">
+# これはタイトルです
+サブタイトルとかウンチクとかウンウン...
+</tempalte>
+
+<tempalte layout="bullets" type="text/x-markdown">
+## これは箇条書きです
+- りんご
+- みかん
+- どりあん
+</template>
+```
+
+</script>
+
+<script layout="code" type="text/x-markdown">
+### レイアウトの設定
+
+```html
+<section layout>標準レイアウト</section>
+
+<section layout="title">タイトルのレイアウト</section>
+
+<section layout="bullets">箇条書きのレイアウト</section>
+
+<section layout="code">コード例のレイアウト</section>
+```
+</script>
+
+<!--
+<script layout="code" type="text/x-markdown">
+### 色反転の設定
+
+```html
+<section layout>
+基本は白系
+</section>
+
+<section layout invert>
+`invert` で黒系
+</section>
+```
+</script>
+-->
+
+<script layout="code" type="text/x-markdown">
+### 背景画像とフィルタの設定
+
+```html
+<section
+  layout="title"
+  backface="background-image.jpg"
+  backface-filter="blur(1px) brightness(.8)">
+
+<h1>Title</h1>
+<p>foo, bar, baz, qux...</p>
+
+</section>
+```
+</script>
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/example.jpg"
+        backface-filter="blur(0) brightness(.9)">
+`backface-filter="blur(0) brightness(1)"`
+</script>
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/example.jpg"
+        backface-filter="blur(5px) brightness(.7)">
+`backface-filter="blur(10px) brightness(.5)"`
+</script>
+
+<script layout="title" type="text/x-markdown">
+### ポインターモード
+
+プレゼン中に `b` を押すと切り替わります
+</script>
+
+<script layout="title" type="text/x-markdown">
+### キャンバスモード
+
+プレゼン中に `v` を押すと切り替わります
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## アクセシビリティ関係
+
+- 全体的に WAI-ARIA の対応中
+- `aria-live` を使ったスライド遷移時の読み上げ
+- 本当に使いものになるのかは定かでない...(plz review)
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## その他
+
+- コードハイライト対応
+- タッチデバイス対応
+- キーボード操作対応（カスタム可）
+- 4:3 または 16:9 の自動スケーリング
+</script>
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/4.jpg"
+        backface-filter="blur(1px) brightness(.3)">
+## 作例
+
+`<iframe>` で実際の HTML スライドを読み込んでいます
+</script>
+
+<script layout type="text/x-markdown">
+<iframe src="http://s.aho.mu/160809-a11y_informal_study/" width="1024" height="576"></iframe>
+</script>
+
+<script layout type="text/x-markdown">
+<iframe src="https://t32k.me/slides/2016/microinteractions/#" width="1024" height="576"></iframe>
+</script>
+
+<script layout type="text/x-markdown">
+<iframe src="http://hiloki.github.io/s/150221-frontrend_conference/" width="1024" height="576"></iframe>
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 周辺ツール
+
+- [ysugimoto/resumify](https://github.com/ysugimoto/resumify) PDF 変換
+- [nakajmg/talkie-generator](https://github.com/nakajmg/talkie-generator) ジェネレータ from Markdown
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 使い始めはたったの3ステップ
+
+1. [公開サイト](https://github.com/ahomu/Talkie/releases)から最新版をダウンロード
+2. サンプルファイル ( index.html ) をベースに編集
+3. どこかのサーバーにアップロードとかして公開
+</script>
+
+<script layout="title" invert type="text/x-markdown">
+## あなたも急な無茶振りに<br>[Talkie.js](https://github.com/ahomu/Talkie) でレッツトライ！
+</script>
+
+<script layout="cover" invert type="text/x-markdown"
+        backface="./img/5.jpg"
+        backface-filter="blur(1px) brightness(.66)">
+
+<h1 style="font-weight:bold;">Thank you</h1>
+
+- <a href="http://aho.mu" target="_blank" style="color: white !important; font-weight:bold;">aho.mu</a>
+- <a href="https://twitter.com/ahomu" target="_blank" style="color: white !important; font-weight:bold;">@ahomu</a>
+</script>
+
+<template layout="bullets" invert type="text/x-markdown"
+          backface="./img/abematv.png"
+          backface-filter="blur(1px) brightness(.5)">
+## インターネットテレビ局<br>AbemaTV 🙏
+
+- [ブラウザ](https://abema.tv/)
+- [iOS アプリ](https://itunes.apple.com/jp/app/abematv/id1074866833?l=ja&ls=1&mt=8)
+- [Android アプリ](https://play.google.com/store/apps/details?id=tv.abema)
+</template>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+<script src="./dist/talkie.min.js"></script>
+<script>
+  var talkie = Talkie({wide: true, notransition: true});
+
+  talkie.key('s').subscribe(talkie.next$);
+  talkie.key('n').subscribe(talkie.next$);
+  talkie.key('a').subscribe(talkie.prev$);
+  talkie.key('p').subscribe(talkie.prev$);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    talkie.changed.subscribe(function(current) {
+      console.clear();
+      // print presenter notes
+      console.info(talkie.notes[current.getAttribute('data-page')]);
+    });
+  });
+</script>
+</body>
+</html>
