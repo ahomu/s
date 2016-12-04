@@ -1,0 +1,301 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>UI 実装の再考と a11y - Frontrend Vol.8 LT</title>
+  <link rel="stylesheet" href="./dist/talkie.min.css">
+  <link rel="stylesheet" href="./dist/talkie-default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/monokai_sublime.min.css">
+  <style>
+    [layout] {
+      font-family: "NotoSansCJKjp-Light","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout] h1, [layout] h2, [layout] h3, [layout] h4, [layout] h5, [layout] h6 {
+      font-weight: bold;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout="title"][invert] a {
+      /*color: #fff !important;*/
+      /*text-decoration: underline;*/
+    }
+  </style>
+</head>
+<body>
+
+<!-- put your slides -->
+
+<template layout="title" invert type="text/x-markdown"
+        backface="./img/0.jpg"
+        backface-filter="blur(0) brightness(.7)">
+# UI 実装の再考と a11y
+
+2016.12.05 - Frontrend Vol.8 LT [@ahomu](https://twitter.com/ahomu)
+</template>
+
+<template layout="bullets" type="text/x-markdown">
+## @ahomu です
+
+- [aho.mu](http://aho.mu)
+- 最近、[久米島に日帰り](https://havelog.ayumusato.com/travel/e727-1day_okinawa.html)でいってきた
+- 株式会社 [AbemaTV](https://abema.tv/) 出向中
+- 本社の [Web Iniative Center](https://havelog.ayumusato.com/misc/e701-web_initiative_center.html) も兼務
+- [Frontend Weekly](https://frontendweekly.tokyo) キュレーター
+</template>
+
+<!-- ====================================================================================== -->
+
+<template layout="title" invert type="text/x-markdown"
+        backface="./img/1.jpg"
+        backface-filter="blur(1px) brightness(.8)">
+## <strong>残念</strong>な UI
+
+どんなものを想像しますか？
+</template>
+
+<script layout="code" type="text/x-markdown">
+### span な button
+
+```html
+<span onClick={someFn}>わたしはボタン！！</span>
+```
+
+キーボードでフォーカスも選択もできない
+</script>
+
+<script layout="code" type="text/x-markdown">
+### span な a
+
+```jsx
+<span onClick={toLink}>わたしはリンク！！</span>
+
+<a href="#" onClick={toLink}>わたしはリンク？？</a>
+```
+
+新しいタブで開いたり、URLも確認できない
+</script>
+
+<script layout="code" type="text/x-markdown">
+### 強い :hover 依存
+
+```html
+<style>.menu:hover > div { display: block }</style>
+<span class="menu">
+  <div>わたしがメニュー本体</div>
+</span>
+```
+
+タッチデバイスやキーボードで詰む
+</script>
+
+<script layout="code" type="text/x-markdown">
+### I am checkbox item
+
+```html
+<span class="check-item">
+  <span class="checkbox"></span>チェック項目
+  <input type="hidden" name="item" />
+</span>
+```
+
+キーボードで詰むし、`<label>`どこいった
+</script>
+
+<script layout="code" type="text/x-markdown">
+### Don't think. Feel.
+
+```css
+a, button, input, select {
+  outline: none;
+}
+```
+
+考えるな感じるんだ？
+</script>
+<!--
+<script layout="title" type="text/x-markdown">
+## みんな忙しい...😇
+
+基本がおさえられていないことの問題意識
+</script>
+-->
+
+<script layout="title" type="text/x-markdown">
+## <strong>｢使えない｣</strong>を<br>減らしたい
+
+プロダクトの実装品質とクライアント環境のマッチング<br>クライアント環境がプアすぎて使えないのはやむなし
+</script>
+
+<script layout="title" type="text/x-markdown">
+## クライアント環境の多様性<br>という基本的な考え方
+
+だれが、いつ、どこで、どのように使うかは様々
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+### 多様性の例
+
+- ユーザーエージェント（ハードウェア、ソフトウェア）
+- ネットワーク環境（モバイル回線、強い光回線）
+- ユーザー自身（けが人、高齢者、障碍者 etc）
+- 利用環境と文脈（オフィス、お昼時の外、買い物中 etc）
+</script>
+
+<script layout="title" type="text/x-markdown">
+## ｢使えない｣は｢使いづらい｣の<br>延長線上にある
+
+ユーザビリティとアクセシビリティの連続性👇<br>
+ref. [あなたの価値を高めるWebアクセシビリティ](http://www.slideshare.net/rikiha/web-69781723/33)
+</script>
+
+<!-- ====================================================================================== -->
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/2.jpg"
+        backface-filter="blur(0) brightness(.6)">
+## アクセシビリティの再考
+
+UI の品質という観点でアクセシビリティを取り入れたい
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+<strong>｢アクセシビリティ = 一部のユーザー向け｣</strong> というバイアス
+</script>
+
+<script layout="bullets" invert type="text/x-markdown">
+### [![マシンリーダブルとヒューマンリーダブル](./img/readable-a11y.png)](http://www.yasuhisa.com/could/article/nextwebconf-2015/)
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+<strong>｢アクセシビリティ対応｣</strong> という過剰表現
+</script>
+
+<template layout="title" invert type="text/x-markdown"
+        backface="./img/is-a-process.png"
+        backface-filter="blur(3px) brightness(.4)">
+### [Accessibility is a Process, Not a Project](https://medium.com/@jonbmetz/accessibility-is-a-process-not-a-project-ce1c1cdc3aa7#.mxb3s06sv)
+</template>
+
+<!--
+<script layout="title" invert type="text/x-markdown">
+## アクセシビリティという<br>品質観点の追加
+
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+### さてどうしよう？
+
+- 実は「やるぞ！」っていうのもしっくりこない
+- Web はテキストベースなので壊滅的にはなりづらい
+- アクセシビリティは 0 か 1 ではないのでじっくり
+- 何か明確な基準を参考にしないと雲を掴みそう
+</script>
+-->
+
+<script layout="bullets" type="text/x-markdown">
+### どうやってやる？
+
+- 普段からコードレビュー時の観点に含める
+- 基準ができたらそれを従い目指す
+- 基準がないならベストエフォード
+- ブラウザサポートと考え方は近いかも
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+### どうやって広める？
+
+- [勉強会の実施](https://havelog.ayumusato.com/develop/a11y/e720-a11y_informal_study.html)（関心を高める）
+- ユーザーテスト結果の共有（危機感をもつ）
+- lint 的な自動チェックを導入
+- QA プロセスのテスト項目化
+- アクセシビリティ指針の策定（たいへん）
+</script>
+
+<!-- ====================================================================================== -->
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/3.jpg"
+        backface-filter="blur(0) brightness(.5)">
+## 規格や基準、ガイドライン
+
+のごく一部を紹介
+</script>
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/wcag.png"
+        backface-filter="blur(3px) brightness(.4)">
+### [WCAG Overview ◦ Web Accessibility Initiative ◦ W3C](https://www.w3.org/WAI/intro/wcag.php)
+
+ウェブコンテンツアクセシビリティガイドライン、の略<br>
+日本国内用では [JIS X 8341-3:2016](http://waic.jp/docs/jis2016/understanding/201604/) として定義される
+</script>
+<!--
+<script layout="title" invert type="text/x-markdown">
+### [JIS X 8341-3:2016 解説](http://waic.jp/docs/jis2016/understanding/201604/)
+
+高齢者・障害者等配慮設計指針－情報通信における機器,<br>ソフトウェア及びサービス－第3部：ウェブコンテンツ
+</script>
+-->
+<!--
+<script layout="title" invert type="text/x-markdown">
+### [Accessibility Guidelines for United Nations Websites](http://www.un.org/webaccessibility/index.shtml)
+
+国連のガイドライン
+</script>
+-->
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/vox.png"
+        backface-filter="blur(3px) brightness(.4)">
+### [Vox Product Accessibility Guidelines](http://accessibility.voxmedia.com/)
+
+Vox Product の職種別ガイドライン
+</script>
+
+<script layout="title" invert type="text/x-markdown"
+        backface="./img/bbc.png"
+        backface-filter="blur(3px) brightness(.4)">
+### [BBC Mobile Accessibility Prototype](http://www.bbc.co.uk/guidelines/futuremedia/accessibility/mobile)
+
+BBC のモバイル向けガイドライン
+</script>
+
+<!-- ====================================================================================== -->
+
+<template layout="bullets" invert type="text/x-markdown">
+## まとめ
+
+- 思う所ありアクセシビリティを品質として再考中
+- 肩肘張らないでも、ちゃんとやれば皆それなりに嬉しい
+- 運用すべき品質なので、継続的に取り組めばいい
+- 使えないものは作りたくないよね
+- [先日、ブログ記事でもそのような旨を書いた](https://havelog.ayumusato.com/develop/a11y/e726-web_a11y_and_webdev.html)
+</template>
+
+<script layout="cover" invert type="text/x-markdown"
+        backface="./img/99.jpg"
+        backface-filter="blur(0) brightness(.8)">
+
+<h1 style="font-weight:bold;">Thank you</h1>
+
+- <a href="http://aho.mu" target="_blank" style="color: white !important; font-weight:bold;">aho.mu</a>
+- <a href="https://twitter.com/ahomu" target="_blank" style="color: white !important; font-weight:bold;">@ahomu</a>
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+<script src="./dist/talkie.min.js"></script>
+<script>
+  var talkie = Talkie({wide: true, notransition: true});
+
+  talkie.key('s').subscribe(talkie.next$);
+  talkie.key('n').subscribe(talkie.next$);
+  talkie.key('a').subscribe(talkie.prev$);
+  talkie.key('p').subscribe(talkie.prev$);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    talkie.changed.subscribe(function(current) {
+      console.clear();
+      // print presenter notes
+      console.info(talkie.notes[current.getAttribute('data-page')]);
+    });
+  });
+</script>
+</body>
+</html>
