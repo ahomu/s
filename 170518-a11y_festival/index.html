@@ -6,6 +6,20 @@
   <link rel="stylesheet" href="./dist/talkie.min.css">
   <link rel="stylesheet" href="./dist/talkie-default.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/monokai_sublime.min.css">
+  <meta property="og:url" content="http://s.aho.mu/170518-a11y_festival/">
+  <meta property="og:site_name" content="s.aho.mu - 発表資料集">
+  <meta property="og:author" content="ahomu">
+  <meta name="twitter:url" content="http://s.aho.mu/170518-a11y_festival/">
+  <meta name="twitter:site" content="@ahomu">
+  <meta property="og:image" content="http://s.aho.mu/170518-a11y_festival/img/photo-frontrend.jpg">
+  <meta name="twitter:image" content="http://s.aho.mu/170518-a11y_festival/img/photo-frontrend.jpg">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="CyberAgent が目指すマスメディアとアクセシビリティ">
+  <meta property="og:description" content="アクセシビリティの祭典(2017年5月18日)にて行われたセッション「私たち企業がアクセシビリティに取り組む理由」での発表資料">
+  <meta name="twitter:card" content="summary_image">
+  <meta name="twitter:title" content="CyberAgent が目指すマスメディアとアクセシビリティ">
+  <meta name="twitter:description" content="アクセシビリティの祭典(2017年5月18日)にて行われたセッション「私たち企業がアクセシビリティに取り組む理由」での発表資料">
+  <meta name="description" content="アクセシビリティの祭典(2017年5月18日)にて行われたセッション「私たち企業がアクセシビリティに取り組む理由」での発表資料">
   <style>
     #prev { border-right-color: #ffffff; }
     #next { border-left-color: #ffffff; }
@@ -54,6 +68,9 @@
       background-color: rgba(0, 0, 0, .8);
       padding: 0.3em 0.5em;
     }
+    [layout="bullets"] ul ul {
+      list-style-type: disc;
+    }
   </style>
 </head>
 <body>
@@ -72,9 +89,10 @@
 ## 佐藤 歩 / Ayumu Sato
 
 - 株式会社サイバーエージェント
-- 技術本部 Web Initiative Center (WIC) テックリード
-- **1年前 WIC 設立時にアクセシビリティの強化を決意**
-- セミナー講師、専門誌への寄稿なども手がける
+- 技術本部 Web Initiative Center テックリード
+  - 1 年前に横断的な Web 技術の組織を設立
+  - **設立時にアクセシビリティへの取り組みを強化**
+  - 他、速度改善や先進技術のファシリテートなど
 </script>
 
 <script layout="bullets" type="text/x-markdown">
@@ -194,7 +212,7 @@
 </script>
 
 <script layout="bullets" type="text/x-markdown">
-## 自社サービス改善の取り組み
+## 各現場で行われた取り組み
 
 - 障害者を対象にしたユーザーテストの実施
 - アクセシビリティガイドラインの作成 (進行形)
@@ -225,11 +243,11 @@
 </script>
 
 <script layout="bullets" type="text/x-markdown">
-## 持続的に取り組める体制を<br>目指した仕組み作り
+## 持続的に取り組める組織を<br>目指した仕組み作り
 
 - **一時的プロジェクトではなく、継続的プロセスの確立**
-- 基準を満たしてゴールではなく、改善を続けられる組織へ
-- アクセシビリティに限らず属人的体制は忌避すべき
+- 基準を満たしてゴールではなく、取り組み続けられる組織へ
+- アクセシビリティに限らず属人的な体制は続かない
 </script>
 
 <!--
@@ -274,18 +292,15 @@
 
 新しい技術を追うばかりでなく、クライアントサイド開発者が提供できる価値としてアクセシビリティを再発見させる活動
 </script>
-
-<script layout="title" type="text/x-markdown">
->私は「Web Initiative Center」の理念に強く共感して、この会社であればアクセシビリティに真摯に取り組めると思って入社しました。やっぱり自分が作っているものが価値あるものだと嬉しいですし、より価値の高いものを作っていきたいと思っています。
-</script>
 -->
 
 <script layout="title" invert type="text/x-markdown">
 <img src="./img/figure-strategy.png"
      alt="図:開発現場への啓蒙戦略"
-     longdesc="図説明:トップダウン（評価制度への反映、社内報での情報発信、社外メディアへの露出）とボトムアップ（社内勉強会による啓蒙、専用チャットで情報交換、現場のファシリテート）の両面から開発現場にはたらきかける。">
+     longdesc="図説明:トップダウン（評価制度への反映、社内報を使った認知拡大、社外向けの情報発信）とボトムアップ（社内勉強会による啓蒙、専用チャットで情報交換、現場のファシリテート）の両面から「みんなが取り組んでいる」という理想状態を目指す。">
 </script>
 
+<!--
 <script layout="title" type="text/x-markdown"
         backface="./img/capture-blog.jpg">
 ## [開発者ブログ](https://developers.cyberagent.co.jp/blog/archives/7041/)で紹介<br>→ 社員も見てくれる
@@ -296,7 +311,6 @@
 ## [社外向けセミナー](https://frontrend.connpass.com/event/53985/)でテーマ化<br>→ 社員も参加してくれる
 </script>
 
-<!--
 <script layout="bullets" type="text/x-markdown">
 ## 得られたもの
 
@@ -310,10 +324,9 @@
 <script layout="bullets" type="text/x-markdown">
 ## ポイント
 
-- トップダウンとボトムアップを同時に展開する
 - 評価の保証によってロールモデルやキャリアを開拓する
 - 社外向けの広報も使って、数百人いる社内に方針を伝える
-- アクセシビリティに取り組む！という雰囲気を創出する
+- アクセシビリティに取り組んでいる組織を作り出す
 </script>
 
 <script layout="bullets" type="text/x-markdown">
@@ -321,13 +334,12 @@
 
 - 職種を超えた興味関心の更なる啓蒙
 - 品質管理部門（テスト部隊）との連携強化
-- スマホアプリ（iOS, Android）への展開
+- スマホアプリ（iOS、Android）への展開
 </script>
 
 <!- - - - - - - - - - - - - - - - - - - - - - - - - - ->
 
-<script layout="cover" type="text/x-markdown"
-        backface="./img/bg-back-cover.jpg" backface-filter="blur(1px) brightness(.9)">
+<script layout="cover" type="text/x-markdown">
 ## Be Accessible!<br>ありがとうございました <span>🙇</span>
 
 Web Site [aho.mu](http://aho.mu)<br>Twitter [@ahomu](https://twitter.com/ahomu)
