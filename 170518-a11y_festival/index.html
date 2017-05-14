@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>CyberAgent が目指すマスメディアとアクセシビリティ</title>
+  <link rel="stylesheet" href="./dist/talkie.min.css">
+  <link rel="stylesheet" href="./dist/talkie-default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/monokai_sublime.min.css">
+  <style>
+    #prev { border-right-color: #ffffff; }
+    #next { border-left-color: #ffffff; }
+    #control { color: #ffffff; }
+    #progress { background-color: #ffffff; }
+    [invert] #prev { border-right-color: #008b18; }
+    [invert] #next { border-left-color: #008b18; }
+    [invert] #control { color: #008b18; }
+    [invert] #progress { background-color: #008b18; }
+    [layout] a,
+    [layout][invert] a {
+      color: #ffffff !important;
+      text-decoration: underline !important;
+    }
+    [layout] {
+      color: #ffffff;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout][invert] {
+      color: #008b18;
+    }
+    [layout] h1, [layout] h2 {
+      font-weight: bold;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout] strong {
+      font-size: 100%;
+      border: solid 3px #ffffff;
+      padding: 6px;
+      margin-left: -6px;
+    }
+    [layout] p {
+      text-align: center;
+    }
+    [layout] blockquote {
+      opacity: 1;
+    }
+    [data-body-bg] {
+      background: #008b18;
+    }
+    [data-body-bg][invert] {
+      background: #ffffff;
+    }
+    [layout="title"][backface] h1, [layout="title"][backface] h2 {
+      color: #ffffff;
+      background-color: rgba(0, 0, 0, .8);
+      padding: 0.3em 0.5em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- put your slides -->
+
+<template layout="title" h-left type="text/x-markdown">
+<style>h1 { line-height: 1.3; }</style>
+# CyberAgent が目指す<br>マスメディアと<br>アクセシビリティ
+
+アクセシビリティの祭典 2017年5月18日<br>
+佐藤 歩 ( Ayumu Sato ) 株式会社サイバーエージェント
+</template>
+
+<script layout="bullets" type="text/x-markdown">
+## 佐藤 歩 / Ayumu Sato
+
+- 株式会社サイバーエージェント
+- 技術本部 Web Initiative Center (WIC) テックリード
+- **1年前 WIC 設立時にアクセシビリティの強化を決意**
+- セミナー講師、専門誌への寄稿なども手がける
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## アウトライン
+
+1. メディア事業にとっての動機付け
+2. 直近1年の社内的な取り組み
+3. 組織に根付かせる仕組み作り
+</script>
+
+<!- - - - - - - - - - - - - - - - - - - - - - - - - - ->
+
+<script invert layout="title" type="text/x-markdown">
+## ①メディア事業にとっての<br>動機付け
+</script>
+
+<!--
+<script layout="bullets" type="text/x-markdown">
+## 会社紹介
+
+- 社名: 株式会社サイバーエージェント
+- 設立: 1998年3月18日
+- 連結社員数: 4,153名（2017年4月末時点）
+- 連結売上高: 3,106億円（2016年9月決算時）
+- 開発拠点: 東京（渋谷/秋葉原ラボ）・大阪・福岡
+</script>
+-->
+
+<script layout="bullets" type="text/x-markdown">
+## サイバーエージェントの事業
+
+- **メディア事業**
+- インターネット広告事業
+- ゲーム事業
+- 投資育成事業
+</script>
+
+<script layout="title" type="text/x-markdown">
+## 会社のビジョン<br>｢21世紀を代表する会社を創る｣
+
+中長期の柱としてメディア事業をマスメディアに育てる
+</script>
+
+<script horizontal layout="bullets" type="text/x-markdown">
+## アメーバブログ
+
+![アメーバブログ](./img/thumb-ameblo.jpg)
+
+- **国内最大級のブログサービス**
+- 多数の芸能人、有名人ブログ
+- サービス提供開始から12年
+- 月間で数十億のページビュー
+
+-----
+
+テキストベースなので、アクセシビリティ的に有利なコンテンツの宝庫
+</script>
+
+<script layout="title" type="text/x-markdown"
+        backface="./img/thumb-ameblo.jpg"
+        backface-filter="brightness(.3) blur(5px)">
+<h2 style="line-height:1.1">プロジェクトのコアバリュー<br><span style="font-size:50%;">誰でも書ける、見られる、満たされるブログ</span></h2>
+
+投稿画面の改修によって使えなくなってしまった方から<br>厳しいご意見をいただいた過去もありました
+</script>
+
+<script horizontal layout="bullets" type="text/x-markdown">
+## AbemaTV（アベマTV）
+
+![AbemaTV](./img/thumb-abematv.jpg)
+
+- **インターネットテレビ局**
+- 24時間365日無料で楽しめる
+- スマホ、パソコン、テレビ対応
+- マスメディアを目指し急成長中
+
+-----
+
+映像と音声に加え、字幕も用意できればテレビと同じように多くの方々に楽しんでいただけるポテンシャルがある
+</script>
+
+<script layout="title" type="text/x-markdown"
+        backface="./img/thumb-abematv.jpg"
+        backface-filter="brightness(.3) blur(5px)">
+## テレビに求められる公共性
+
+熊本地震では最新情報を約49時間半にわたって[緊急放送](https://abematimes.com/posts/1714949)
+</script>
+
+<!--
+<script horizontal layout="bullets" type="text/x-markdown">
+## FRESH!（フレッシュ）
+
+![FRESH!](./img/thumb-fresh.png)
+
+- **映像配信プラットフォーム**
+- 音楽ライブ中継やイベント実況
+- 一般ユーザーの生放送も多数
+- 現在70,000以上の番組を配信
+</script>
+-->
+
+<script layout="title" type="text/x-markdown">
+## マスメディアになるための<br>手段として、責務として
+
+それを支えるクラフトマンシップ（職人気質）の醸成
+
+-----
+
+組織としてはマスメディアになるための必要条件として、個人としてはクラフトマンシップとして、アクセシビリティに取り組んでいる
+</script>
+
+<!- - - - - - - - - - - - - - - - - - - - - - - - - - ->
+
+<script invert layout="title" type="text/x-markdown">
+## ②直近1年の<br>社内的な取り組み
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 自社サービス改善の取り組み
+
+- 障害者を対象にしたユーザーテストの実施
+- アクセシビリティガイドラインの作成 (進行形)
+- スクリーンリーダーのテスト環境整備
+- コーポレートサイトのリニューアルに伴う方針策定
+- その他、現場における実装上の改善と盛り上げ
+</script>
+
+<script layout="title" type="text/x-markdown"
+        backface="./img/photo-seminar.jpg">
+## 外部から講師を招いて<br>社内勉強会を開催
+</script>
+
+<script layout="title" type="text/x-markdown"
+        backface="./img/photo-voiceover.jpg">
+## VoiceOver や Talkback を<br>使ってみる会
+</script>
+
+<script layout="title" type="text/x-markdown"
+        backface="./img/photo-ameblo.jpg">
+## アメブロチーム内の<br>自主的な勉強会
+</script>
+
+<!- - - - - - - - - - - - - - - - - - - - - - - - - - ->
+
+<script invert layout="title" type="text/x-markdown">
+## ③組織に定着させる<br>仕組み作り
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 持続的に取り組める体制を<br>目指した仕組み作り
+
+- **一時的プロジェクトではなく、継続的プロセスの確立**
+- 基準を満たしてゴールではなく、改善を続けられる組織へ
+- アクセシビリティに限らず属人的体制は忌避すべき
+</script>
+
+<!--
+
+<script layout="bullets" type="text/x-markdown">
+## 元々の関心は高くなかった
+
+- **というよりもアクセシビリティが身近でなかった**
+- ユーザーテストの様子を見せれば一発で必要性が伝わった
+- 技術的な知識への好奇心から関心をもつ人もいた
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 自分がやったこと
+
+- アクセシビリティ関係のセミナーに参加して繋がり作り
+- 自分なりにアクセシビリティを他人に啓蒙できるまで再考
+- Web アプリ開発者の観点からブログやイベントで情報発信
+- 持続的に改善を続けられる組織を実現するための仕掛け
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 啓蒙テイスト
+
+- ユーザビリティとアクセシビリティの連続性
+- パフォーマンス文脈からの｢使えない｣という状態の深刻さ
+- クラフトマンシップに基づく品質意識の向上
+- 21世紀を代表するマスメディア、という事業的意義の言語化
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 現実的なこと
+
+- テクニカルな部分の知識は実践を通して後から追いついてくる
+- サービスの品質 x ユーザーリテラシー x ユーザーの道具
+- サービスのアクセシビリティだけで担保するものではない
+- 人件費を伴うビジネスとしては必要十分ラインの定義は必要
+</script>
+
+<script layout="title" type="text/x-markdown">
+## メッセージ
+
+新しい技術を追うばかりでなく、クライアントサイド開発者が提供できる価値としてアクセシビリティを再発見させる活動
+</script>
+
+<script layout="title" type="text/x-markdown">
+>私は「Web Initiative Center」の理念に強く共感して、この会社であればアクセシビリティに真摯に取り組めると思って入社しました。やっぱり自分が作っているものが価値あるものだと嬉しいですし、より価値の高いものを作っていきたいと思っています。
+</script>
+-->
+
+<script layout="title" invert type="text/x-markdown">
+<img src="./img/figure-strategy.png"
+     alt="図:開発現場への啓蒙戦略"
+     longdesc="図説明:トップダウン（評価制度への反映、社内報での情報発信、社外メディアへの露出）とボトムアップ（社内勉強会による啓蒙、専用チャットで情報交換、現場のファシリテート）の両面から開発現場にはたらきかける。">
+</script>
+
+<script layout="title" type="text/x-markdown"
+        backface="./img/capture-blog.jpg">
+## [開発者ブログ](https://developers.cyberagent.co.jp/blog/archives/7041/)で紹介<br>→ 社員も見てくれる
+</script>
+
+<script layout="title" type="text/x-markdown"
+        backface="./img/photo-frontrend.jpg">
+## [社外向けセミナー](https://frontrend.connpass.com/event/53985/)でテーマ化<br>→ 社員も参加してくれる
+</script>
+
+<!--
+<script layout="bullets" type="text/x-markdown">
+## 得られたもの
+
+- 社内外における認知の向上 → 自主的な取り組みが発生
+- 某サイトリニューアルのアクセシビリティ監修依頼
+- アクセシビリティに関心の高いメンバーの中途採用
+- 提供サービスのアクセシビリティ改善<span>✨️</span>
+</script>
+-->
+
+<script layout="bullets" type="text/x-markdown">
+## ポイント
+
+- トップダウンとボトムアップを同時に展開する
+- 評価の保証によってロールモデルやキャリアを開拓する
+- 社外向けの広報も使って、数百人いる社内に方針を伝える
+- アクセシビリティに取り組む！という雰囲気を創出する
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+## 今後の展望
+
+- 職種を超えた興味関心の更なる啓蒙
+- 品質管理部門（テスト部隊）との連携強化
+- スマホアプリ（iOS, Android）への展開
+</script>
+
+<!- - - - - - - - - - - - - - - - - - - - - - - - - - ->
+
+<script layout="cover" type="text/x-markdown"
+        backface="./img/bg-back-cover.jpg" backface-filter="blur(1px) brightness(.9)">
+## Be Accessible!<br>ありがとうございました <span>🙇</span>
+
+Web Site [aho.mu](http://aho.mu)<br>Twitter [@ahomu](https://twitter.com/ahomu)
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+<script src="./dist/talkie.min.js"></script>
+<script>
+var talkie = Talkie({wide: false, notransition: true, linkShouldBlank: true});
+
+talkie.key('s').subscribe(talkie.next$);
+talkie.key('n').subscribe(talkie.next$);
+talkie.key('a').subscribe(talkie.prev$);
+talkie.key('p').subscribe(talkie.prev$);
+
+document.addEventListener('DOMContentLoaded', function() {
+  talkie.changed.subscribe(function(current) {
+    console.clear();
+    // print presenter notes
+    console.info(talkie.notes[current.getAttribute('data-page')]);
+  });
+});
+</script>
+</body>
+</html>
