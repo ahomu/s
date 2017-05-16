@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>5分で分かった気になる Fluent Design System</title>
+  <link rel="stylesheet" href="./dist/talkie.min.css">
+  <link rel="stylesheet" href="./dist/talkie-default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/monokai_sublime.min.css">
+  <meta property="og:url" content="http://s.aho.mu/170517-frontend_nagoya_0/">
+  <meta property="og:site_name" content="s.aho.mu - 発表資料集">
+  <meta property="og:author" content="ahomu">
+  <meta name="twitter:url" content="http://s.aho.mu/170517-frontend_nagoya_0/">
+  <meta name="twitter:site" content="@ahomu">
+  <meta property="og:image" content="http://s.aho.mu/170517-frontend_nagoya_0/img/capture-ms-fluent.jpg">
+  <meta name="twitter:image" content="http://s.aho.mu/170517-frontend_nagoya_0/img/capture-ms-fluent.jpg">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="5分で分かった気になる Fluent Design System">
+  <meta property="og:description" content="Frontend Nagoya #0(2017年5月17日)で発表したライトニングトーク資料">
+  <meta name="twitter:card" content="summary_image">
+  <meta name="twitter:title" content="5分で分かった気になる Fluent Design System">
+  <meta name="twitter:description" content="Frontend Nagoya #0(2017年5月17日)で発表したライトニングトーク資料">
+  <meta name="description" content="Frontend Nagoya #0(2017年5月17日)で発表したライトニングトーク資料">
+  <style>
+    #prev { border-right-color: #ffffff; }
+    #next { border-left-color: #ffffff; }
+    #control { color: #ffffff; }
+    #progress { background-color: #ffffff; }
+    [invert] #prev { border-right-color: #006bc9; }
+    [invert] #next { border-left-color: #006bc9; }
+    [invert] #control { color: #006bc9; }
+    [invert] #progress { background-color: #006bc9; }
+    [layout] a,
+    [layout][invert] a {
+      color: #ffffff !important;
+      text-decoration: underline !important;
+    }
+    [layout] {
+      color: #ffffff;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout][invert] {
+      color: #006bc9;
+    }
+    [layout] h1, [layout] h2 {
+      font-weight: bold;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout] strong {
+      font-size: 100%;
+      border: solid 3px #ffffff;
+      padding: 6px;
+    }
+    [layout] p {
+      text-align: center;
+    }
+    [layout] blockquote {
+      opacity: 1;
+    }
+    [data-body-bg] {
+      background: #006bc9;
+    }
+    [data-body-bg][invert] {
+      background: #ffffff;
+    }
+    [layout="title"][backface^="./img/capture"] p {
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: #ffffff;
+      background-color: rgba(0, 0, 0, .8);
+      margin: 0;
+      padding: 0.35em 0.7em;
+      font-size: 1.25em;
+    }
+    [layout="title"][backface^="./img/capture"] a {
+      text-decoration: none !important;
+    }
+    [layout="bullets"] ul ul {
+      list-style-type: disc;
+    }
+    [layout] > * {
+      margin: 30px 120px;
+    }
+    [layout="bullets"][h-left] ul,
+    [layout="bullets"][h-left] ol {
+      margin-left: calc(120px + 1em);
+    }
+    [layout] small {
+      font-size: 60%;
+    }
+    [layout] p {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+<!-- put your slides -->
+
+<template layout="title" h-left type="text/x-markdown"
+          backface="http://s.aho.mu/170517-frontend_nagoya_0/img/capture-ms-fluent.jpg"
+          backface-filter="blur(5px) brightness(.66)">
+<style>h1 { line-height: 1.3; }</style>
+# 5分で分かった気になる <br>Fluent Design System
+
+2017.05.17 - Frontend Nagoya #0 [@ahomu](https://twitter.com/ahomu)
+</template>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## Q. デザインに優れたIT企業といえば？
+
+1. Apple
+2. Google
+3. Microsoft
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## @ahomu です
+
+- 佐藤 歩（Ayumu Sato）
+- [aho.mu](http://aho.mu)
+- CyberAgent, Inc. <span style="opacity: .8">+ AbemaTV, Inc.</span>
+- Web アプリケーション開発屋 または クライアントサイド開発者
+- 今日は知ったかぶりでしゃべります
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## Fluent Design System
+
+- Microsoft が Build 2017 で新たに発表した Design System
+- Universal Windows Platform Apps 向け
+- ようは今後の Windows ファミリーに適用されるデザイン
+- Project NEON と呼ばれていたナニカ
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## Agenda
+
+1. Examples of Design System
+2. What's Fluent Design System ?
+<!-- 3. Microsoft and Design -->
+</script>
+
+<script layout="title" h-left invert type="text/x-markdown">
+## Examples of Design System
+</script>
+
+<script layout="title" h-left invert type="text/x-markdown"
+        backface="./img/capture-google.jpg">
+[https://material.io/](https://material.io/)
+</script>
+
+<script layout="title" h-left invert type="text/x-markdown"
+        backface="./img/capture-apple.jpg">
+[https://developer.apple.com/ios/human-interface-guidelines/overview/design-principles/](https://developer.apple.com/ios/human-interface-guidelines/overview/design-principles/)
+</script>
+
+<script layout="title" h-left invert type="text/x-markdown"
+        backface="./img/capture-salesforce.jpg">
+[https://www.lightningdesignsystem.com/](https://www.lightningdesignsystem.com/)
+</script>
+
+<!--
+<script layout="title" h-left invert type="text/x-markdown"
+        backface="./img/capture-hp.jpg">
+[https://grommet.github.io/](https://grommet.github.io/)
+</script>
+-->
+
+<script layout="bullets" h-left type="text/x-markdown">
+## Style Guide との違い
+
+- Style Guide は [Interface Inventory](http://bradfrost.com/blog/post/interface-inventory/) 的なアプローチ
+  - 基本のビジュアルルールや UI パターンと実装の管理
+  - デザインされた成果物の一貫性や再利用性の担保
+- Design System には概念 (Concept) や原則 (Principles) がある
+- デザインを網羅的に言語化、明文化して共有する
+</script>
+
+<script layout="title" h-left invert type="text/x-markdown">
+## What's Fluent Design System ?
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## 我々の世界の変化
+
+- ユビキタスコンピューティング - The Playground Is Expanding
+  - 2D スクリーンだけでなく、VR/AR のような 3D や、スクリーンのない 0D の発達
+  - あらゆるデバイスとあらゆるインプット（音声やジェスチャ、凝視など）の選択肢
+- クリエイティビティの再考 - Users' Imagination Is Taking Off
+  - ビジュアルやストーリーをもったコミュニケーションの発達
+  - ユーザーが自身でコンテンツを創り出す時代
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## Fluent Design System の志向
+
+- フラットなデザインから、没入的で多次元的なデザインへ
+  - from flat design language to immersive, multi-dimensional one.
+- 限られたタッチスクリーンから、あらゆるデバイスとインプットへ
+  - from small screen and touch to multiple devices and input types.
+- 消費的なコミュニケーションから創造性のキュレーションへ
+  - from consumption and communnication to creativity curation.
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+> With Fluent Design System, we are **unlocking everyone's creativity** by enabling immersive and multi-dimensional experiences that adapt and respond to multiple device & input types.
+
+> Fluent Design System は、様々なデバイスとインプットの方法に適応し、没入的かつ多次元的な一貫性のある体験を実現することによって、あらゆる人々の創造性を解放します。（意訳ないし超訳）
+</script>
+
+<!--
+
+<script layout="bullets" h-left type="text/x-markdown">
+## The Playground Is Expanding
+
+- 既存の 2D デバイス（パソコン、スマートフォン）だけではない
+- AR や VR のような 3D デバイスや、機能だけを提供する 0D デバイス
+- あらゆるデバイスとインプット（音声やジェスチャ、凝視など）の可能性がある
+- マルチデバイス、マルチインプット、マルチユーザーの一貫した体験が必要
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## Users' Imagination Is Taking Off
+
+- ビジュアルやストーリーをもったコミュニケーションの発達
+- ユーザーが自身でコンテンツを創り出すような時代
+</script>
+
+-->
+
+<script layout="title" invert type="text/x-markdown">
+<iframe style="margin: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/vcBGj4R7Fo0?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## Five main building blocks
+
+- Light - フォーカスとコントロール、雰囲気とZ軸の元
+- Depth - 視覚的な深み、階層化や関係性の整理
+- Motion - 物事のつながりの暗示、連続性とダイナミックさ
+- Material - デジタル環境におけるリアリティ、システムの個性
+- Scale - 0D〜3Dでスケールするデザイン、それらをまたぐ体験
+
+-----
+
+機能的な面と情緒的な面の両方が常にある
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## 実際のところ
+
+- これから取り入れられる考えなので実例にはまだ乏しく、抽象度が高い
+- フィードバックを得て、段階的にガイドラインやツールなどが整えられる
+- Windows 10 Fall Creators Update にはいくらか反映される
+- Fluent Design 1st Wave として以下のパーツが提供される
+  - Reveal Highlight, Acrylic Material, Connected Animations, Conscious Controles, Perspective Parallax (案外少ないけど、Fluentっぽさの基礎になる？)
+
+-----
+
+macOS と比べて圧倒的に多いユーザーという背景から慎重、しかし実例が遅いのはプロモーションとしてはもったいない
+</script>
+
+<!--
+<script layout="title" h-left invert type="text/x-markdown">
+## Microsoft and Design
+</script>
+-->
+
+<script layout="title" h-left type="text/x-markdown"
+        backface="./img/capture-ms-design.jpg">
+[https://developer.microsoft.com/en-us/windows/apps/design](https://developer.microsoft.com/en-us/windows/apps/design)
+
+-----
+
+昔から Microsoft のドキュメントに、デザインポータルがある
+Microsoft のデザインも Windows という最強 OS シリーズの中で注目すべき変遷を遂げてきた
+</script>
+
+<script layout="title" h-left type="text/x-markdown"
+        backface="./img/capture-ms-future.jpg">
+[https://www.microsoft.com/enterprise/productivityvision/default.aspx](https://www.microsoft.com/enterprise/productivityvision/default.aspx)
+
+-----
+
+従来の 2D スクリーンデバイスを拡張したさまざまな可能性が示されている
+Fluent が言いたいことも何となく分かるかもしれない
+</script>
+
+<script layout="title" h-left type="text/x-markdown"
+        backface="./img/capture-ms-inclusive.jpg">
+[https://www.microsoft.com/en-us/design/inclusive](https://www.microsoft.com/en-us/design/inclusive)
+
+-----
+
+デザインプロセスに高齢者や障害者などを上流から巻き込んで、我々が分からない潜在的ニーズを取り入れる手法
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## Microsoft について（個人の感想）
+
+- 長大なドキュメントは昔から作ってる、デザインについても例外でない
+- Future Productivity にせよ Inclusive にせよデザインし続けてる
+- Windows Aero はともかく Modern UI とか Surface シリーズとか
+- デザイン的にもソフトウェア的にもデバイス的にも期待が高いです
+
+-----
+
+Surface Studio カッコいいよな！
+</script>
+
+<!- - - - - - - - - - - - - - - - - - - - - - - - - - ->
+
+<script layout="cover" h-left type="text/x-markdown"
+        backface="./img/bg-back-cover.jpg" backface-filter="blur(1px) brightness(.9)">
+## Thank you!
+
+Web Site [aho.mu](http://aho.mu) / Twitter [@ahomu](https://twitter.com/ahomu)
+
+## Resources
+
+- [Fluent Design System (Microsite)](http://fluent.microsoft.com/)
+- [Design Universal Windows Platform (UWP) apps - UWP app developer](https://developer.microsoft.com/en-us/windows/apps/design)
+- [Introducing Fluent Design | Build 2017 | Channel 9](https://channel9.msdn.com/Events/Build/2017/B8066?ocid=player)
+- [Fluent Design System is the Windows UI structure Microsoft desperately needs](http://www.windowscentral.com/fluent-design-ui-structure-microsoft-needs)
+<!-- - [Thinking About the Fluent Design System - Thurrott.com](https://www.thurrott.com/windows/windows-10/115968/thinking-fluent-design-system)-->
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+<script src="./dist/talkie.min.js"></script>
+<script>
+  var talkie = Talkie({wide: true, notransition: true, linkShouldBlank: true});
+
+  talkie.key('s').subscribe(talkie.next$);
+  talkie.key('n').subscribe(talkie.next$);
+  talkie.key('a').subscribe(talkie.prev$);
+  talkie.key('p').subscribe(talkie.prev$);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    talkie.changed.subscribe(function(current) {
+//      console.clear();
+      // print presenter notes
+      console.info(talkie.notes[current.getAttribute('data-page')]);
+    });
+  });
+</script>
+</body>
+</html>
