@@ -11,8 +11,8 @@
   <meta property="og:author" content="ahomu">
   <meta name="twitter:url" content="http://s.aho.mu/170518-a11y_festival/">
   <meta name="twitter:site" content="@ahomu">
-  <meta property="og:image" content="http://s.aho.mu/170518-a11y_festival/img/photo-frontrend.jpg">
-  <meta name="twitter:image" content="http://s.aho.mu/170518-a11y_festival/img/photo-frontrend.jpg">
+  <meta property="og:image" content="http://s.aho.mu/170518-a11y_festival/img/photo-seminar.jpg">
+  <meta name="twitter:image" content="http://s.aho.mu/170518-a11y_festival/img/photo-seminar.jpg">
   <meta property="og:type" content="article">
   <meta property="og:title" content="CyberAgent が目指すマスメディアとアクセシビリティ">
   <meta property="og:description" content="アクセシビリティの祭典(2017年5月18日)にて行われたセッション「私たち企業がアクセシビリティに取り組む理由」での発表資料">
@@ -77,9 +77,11 @@
 
 <!-- put your slides -->
 
-<template layout="title" h-left type="text/x-markdown">
+<template layout="cover" h-left type="text/x-markdown"
+          backface="./img/photo-seminar.jpg"
+          backface-filter="blur(5px) brightness(.66)">
 <style>h1 { line-height: 1.3; }</style>
-# CyberAgent が目指す<br>マスメディアと<br>アクセシビリティ
+# CyberAgentが目指す<br>マスメディアと<br>アクセシビリティ
 
 [アクセシビリティの祭典](http://accfes.com/) 2017年5月18日<br>
 佐藤 歩 ( Ayumu Sato ) 株式会社サイバーエージェント
@@ -348,7 +350,7 @@ Web Site [aho.mu](http://aho.mu)<br>Twitter [@ahomu](https://twitter.com/ahomu)
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
 <script src="./dist/talkie.min.js"></script>
 <script>
-var talkie = Talkie({wide: false, notransition: true, linkShouldBlank: true});
+var talkie = Talkie({wide: true, notransition: true, linkShouldBlank: true});
 
 talkie.key('s').subscribe(talkie.next$);
 talkie.key('n').subscribe(talkie.next$);
