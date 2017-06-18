@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Webフロントエンドで大切なことは全てAuditsが教えてくれた</title>
+  <link rel="stylesheet" href="./dist/talkie.min.css">
+  <link rel="stylesheet" href="./dist/talkie-default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/monokai_sublime.min.css">
+  <meta property="og:url" content="http://s.aho.mu/170621-frokan/">
+  <meta property="og:site_name" content="s.aho.mu - 発表資料集">
+  <meta property="og:author" content="ahomu">
+  <meta name="twitter:url" content="http://s.aho.mu/170621-frokan/">
+  <meta name="twitter:site" content="@ahomu">
+  <meta property="og:image" content="http://s.aho.mu/170621-frokan/img/capture-lighthouse.png">
+  <meta name="twitter:image" content="http://s.aho.mu/170621-frokan/img/capture-lighthouse.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Webフロントエンドで大切なことは全てAuditsが教えてくれた">
+  <meta property="og:description" content="Frontend de KANPAI! #01 (2017年6月21日)のライトニングトーク発表資料">
+  <meta name="twitter:card" content="summary_image">
+  <meta name="twitter:title" content="Webフロントエンドで大切なことは全てAuditsが教えてくれた">
+  <meta name="twitter:description" content="Frontend de KANPAI! #01 (2017年6月21日)のライトニングトーク発表資料">
+  <meta name="description" content="Frontend de KANPAI! #01 (2017年6月21日)のライトニングトーク発表資料">
+  <style>
+    #prev { border-right-color: #ffffff; }
+    #next { border-left-color: #ffffff; }
+    #control { color: #ffffff; }
+    #progress { background-color: #ffffff; }
+    [invert] #prev { border-right-color: #008b18; }
+    [invert] #next { border-left-color: #008b18; }
+    [invert] #control { color: #008b18; }
+    [invert] #progress { background-color: #008b18; }
+    [layout] a,
+    [layout][invert] a {
+      color: #ffffff !important;
+      text-decoration: underline !important;
+    }
+    [layout] {
+      color: #ffffff;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout][invert] {
+      color: #008b18;
+    }
+    [layout] h1, [layout] h2 {
+      font-weight: bold;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout] strong {
+      font-size: 100%;
+      border: solid 3px #ffffff;
+      padding: 6px;
+      margin-left: -6px;
+    }
+    [layout] p {
+      text-align: center;
+    }
+    [layout] blockquote {
+      opacity: 1;
+    }
+    [layout] blockquote p {
+      text-align: left;
+      margin-bottom: 0.6em;
+    }
+    [layout] blockquote cite {
+      display: block;
+      text-align: right;
+    }
+    [layout] code {
+        padding: .1em .2em;
+        background: #fff;
+        color: #008b18;
+        border: 1px solid #999;
+    }
+    [data-body-bg] {
+      background: #008b18;
+    }
+    [data-body-bg][invert] {
+      background: #ffffff;
+    }
+        [layout="title"][backface^="./img/capture"] p {
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: #ffffff;
+      background-color: rgba(0, 0, 0, .8);
+      margin: 0;
+      padding: 0.35em 0.7em;
+      font-size: 1.25em;
+    }
+    [layout="title"][backface^="./img/capture"] a {
+      text-decoration: none !important;
+    }
+    [layout="bullets"] ul ul {
+      list-style-type: disc;
+    }
+    [layout] > * {
+      margin: 30px 120px;
+    }
+    [layout="bullets"][h-left] ul,
+    [layout="bullets"][h-left] ol {
+      margin-left: calc(120px + 1em);
+    }
+    [layout] small {
+      font-size: 60%;
+    }
+    [layout="title"][backface] h1, [layout="title"][backface] h2 {
+      color: #ffffff;
+      background-color: rgba(0, 0, 0, .8);
+      padding: 0.3em 0.5em;
+    }
+    /*[layout][horizontal] > ul,
+    [layout][horizontal] > ol {
+        margin-left: calc(30px + 1em) !important;
+    }
+    [layout][horizontal] > ul:last-child,
+    [layout][horizontal] > ol:last-child {
+        margin-left: 0 !important;
+    }*/
+  </style>
+</head>
+<body>
+
+<!-- put your slides -->
+
+<script layout="cover" h-left type="text/x-markdown"
+          backface="./img/capture-lighthouse.png"
+          backface-filter="blur(3px) brightness(.33)">
+<style>[layout=cover] h1 { font-size: 3.5em; line-height: 1.3; }</style>
+# Webフロントエンドで<br>大切なことは全て<br>Auditsが教えてくれた
+
+2017.06.21 - [Frontend de KANPAI! #01](https://frokan.connpass.com/event/57554/) [@ahomu](https://twitter.com/ahomu)
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## @ahomu です
+
+- 佐藤 歩（Ayumu Sato）
+- [aho.mu](http://aho.mu)
+- CyberAgent, Inc. <span style="opacity: .8">+ AbemaTV, Inc.</span>
+- Web アプリケーション開発屋
+- いえーい、飲んでるー？🍻
+</script>
+
+<script invert layout="title" h-left type="text/x-markdown">
+## みなさん DevTools って<br>使うじゃないですか
+</script>
+
+<script invert layout="title" h-left type="text/x-markdown">
+## Auditsパネルって<br>使ってます？
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## アウトライン
+
+1. 最近の Audits パネル
+2. これからのやっていき
+</script>
+
+<script invert layout="title" h-left type="text/x-markdown">
+## 最近の Audits パネル
+</script>
+
+<script layout="title" type="text/x-markdown"
+        backface="./img/capture-audits-lte59.png">
+## < 60
+</script>
+<!--
+<script layout="bullets" h-left type="text/x-markdown">
+## < 60
+
+- Network Utilization
+- Web Performance
+- Accessibility ( [Extension](https://chrome.google.com/webstore/detail/accessibility-developer-t/fpkknkljclfencbdbgkenhalefipecmb) required )
+</script>-->
+
+<script layout="title" type="text/x-markdown"
+        backface="./img/capture-audits-gte60.png">
+## >= 60
+</script>
+<!--
+<script layout="bullets" h-left type="text/x-markdown">
+## >= 60
+
+- Progressive Web Apps
+- Performance
+- Accessibility
+- Best Practices
+</script>-->
+
+<script layout="bullets" h-left type="text/x-markdown">
+## Lighthouse
+
+- v60 以降の Audits の正体
+- `npm install -g lighthouse` でも使えるし
+- [Chrome Extension](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk) としても使える
+</script>
+
+<script layout="bullets" type="text/x-markdown">
+>Lighthouse は現在、ホーム画面への追加やオフライン サポートをはじめとする Progressive Web App 機能に重点をおいています。
+>
+>また一方で、このプロジェクトの包括的な目標は、<br>**ウェブアプリ品質**のあらゆる側面を網羅した、<br>エンドツーエンドの監査を提供することです。
+>
+><cite>[via. Lighthouse によるウェブアプリの監査](https://developers.google.com/web/tools/lighthouse/?hl=ja)</cite>
+</script>
+
+<script invert layout="title" h-left type="text/x-markdown">
+## これからのやっていき
+</script>
+
+<script layout="title" type="text/x-markdown"
+        backface="./img/capture-audits-gte60.png">
+## 品質が大事だそうです！<br>(改めて)
+
+※ Google Chrome が Audtis をテコ入れするくらいには
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## Web でよく言われる品質
+
+- パフォーマンス
+- アクセシビリティ
+- セキュリティ
+- etc...いわゆる非機能要件
+</script>
+
+<!--
+<script layout="bullets" h-left type="text/x-markdown">
+## 品質面への投資
+
+- 手段系の要素技術と異なり、根っこが変わらない
+- 何もしないと品質は悪化するので常に求められる
+- 考え方だけ引き継いで、他分野にピボットもできる
+- クライアントサイドの品質は多様性に打ち勝つこと
+</script>
+-->
+
+<script layout="bullets" h-left type="text/x-markdown">
+## クライアント環境の多様性
+
+- デバイス（処理性能、スクリーンサイズ、操作方法）
+- ブラウザ、OS（実行時性能の傾向、機能の差異）
+- ネットワーク（オフィス、公衆Wifi、モバイル）
+- ユーザー（年齢や個人差による身体能力や認知特性）
+- etc...
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## ｢ちゃんと使える｣を<br>少しでも多く提供したい
+
+｢使えない｣を減らしてプロダクトの価値を最大化する
+</script>
+
+<section layout="title">
+<div style="width: 640px">
+  <script async class="speakerdeck-embed" data-slide="1" data-id="33bfc5eb8b7f461191896785dcdd99b4" data-ratio="1.25030525030525" src="//speakerdeck.com/assets/embed.js"></script>
+</div>
+</section>
+
+<section layout="title">
+<div style="width: 800px">
+  <script async class="speakerdeck-embed" data-slide="1" data-id="92b606797eda45ce961818382324fc7a" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
+</div>
+<section>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## 考えていること
+
+- 誰もが品質を高めたいと願ってはいるはずだが...
+- 風潮として最新技術へのキャッチアップのが重要だった
+- そろそろ地味な品質にじっくり向き合う余裕がでてきた
+- 要素技術はまた荒れるから、それまでがチャンスっぽい
+</script>
+
+<script invert layout="title" h-left type="text/x-markdown">
+## まとめ
+
+たぶんこれからも求められ続けること
+</script>
+
+<script layout="title" h-left type="text/x-markdown">
+## 多様性を制して<br>品質を高められる専門性
+
+パフォーマンス、アクセシビリティ、セキュリティ<br>etc...とにかくクライアントサイド開発を征する力
+</script>
+
+<script layout="title" h-left type="text/x-markdown">
+## あと月並みですが + αで...
+</script>
+
+<script layout="title" h-left type="text/x-markdown">
+## 越境して巻き込んで<br>自らの職責を<br>高いレベルで果たせる働き方
+
+一人では実現できないから<br>周囲と言葉や目的を合わせられると強い
+</script>
+
+<script layout="cover" h-left type="text/x-markdown">
+## Cheers!! 🍻
+- Site [aho.mu](http://aho.mu)
+- Twitter [@ahomu](https://twitter.com/ahomu)
+
+## Audits 使ってみようぜ ✨ ️
+- [Lighthouse | Web | Google Developers](https://developers.google.com/web/tools/lighthouse/)
+- [New Chrome DevTool Feature You Want to Know About](https://hackernoon.com/the-new-chrome-devtool-feature-you-want-to-know-about-c0d2371151d6)
+- [GoogleChrome/lighthouse](https://github.com/GoogleChrome/lighthouse)
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+<script src="./dist/talkie.min.js"></script>
+<script>
+var talkie = Talkie({wide: false, notransition: true, linkShouldBlank: true});
+
+talkie.key('s').subscribe(talkie.next$);
+talkie.key('n').subscribe(talkie.next$);
+talkie.key('a').subscribe(talkie.prev$);
+talkie.key('p').subscribe(talkie.prev$);
+
+document.addEventListener('DOMContentLoaded', function() {
+  talkie.changed.subscribe(function(current) {
+    console.clear();
+    // print presenter notes
+    console.info(talkie.notes[current.getAttribute('data-page')]);
+  });
+});
+</script>
+</body>
+</html>
