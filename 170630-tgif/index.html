@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>時間依存メディアの読み方</title>
+  <link rel="stylesheet" href="./dist/talkie.min.css">
+  <link rel="stylesheet" href="./dist/talkie-default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/monokai_sublime.min.css">
+  <meta property="og:url" content="http://s.aho.mu/170517-frontend_nagoya_0/">
+  <meta property="og:site_name" content="s.aho.mu - 発表資料集">
+  <meta property="og:author" content="ahomu">
+  <meta name="twitter:url" content="http://s.aho.mu/170517-frontend_nagoya_0/">
+  <meta name="twitter:site" content="@ahomu">
+  <!--<meta property="og:image" content="http://s.aho.mu/170517-frontend_nagoya_0/img/capture-ms-fluent.jpg">-->
+  <!--<meta name="twitter:image" content="http://s.aho.mu/170517-frontend_nagoya_0/img/capture-ms-fluent.jpg">-->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="時間依存メディアの読み方">
+  <meta property="og:description" content="社内勉強会のアレ">
+  <meta name="twitter:card" content="summary_image">
+  <meta name="twitter:title" content="時間依存メディアの読み方">
+  <meta name="twitter:description" content="社内勉強会のアレ">
+  <meta name="description" content="社内勉強会のアレ">
+  <style>
+    #prev { border-right-color: #ffffff; }
+    #next { border-left-color: #ffffff; }
+    #control { color: #ffffff; }
+    #progress { background-color: #ffffff; }
+    [invert] #prev { border-right-color: #006bc9; }
+    [invert] #next { border-left-color: #006bc9; }
+    [invert] #control { color: #006bc9; }
+    [invert] #progress { background-color: #006bc9; }
+    [layout] a,
+    [layout][invert] a {
+      color: #ffffff !important;
+      text-decoration: underline !important;
+    }
+    [layout] {
+      color: #ffffff;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout][invert] {
+      color: #006bc9;
+    }
+    [layout] h1, [layout] h2 {
+      font-weight: bold;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout] strong {
+      font-size: 100%;
+      border: solid 3px #ffffff;
+      padding: 6px;
+    }
+    [layout] p {
+      text-align: center;
+    }
+    [layout] blockquote {
+      opacity: 1;
+    }
+    [data-body-bg] {
+      background: #006bc9;
+    }
+    [data-body-bg][invert] {
+      background: #ffffff;
+    }
+    [layout="title"][backface^="./img/capture"] p {
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: #ffffff;
+      background-color: rgba(0, 0, 0, .8);
+      margin: 0;
+      padding: 0.35em 0.7em;
+      font-size: 1.25em;
+    }
+    [layout="title"][backface^="./img/capture"] a {
+      text-decoration: none !important;
+    }
+    [layout="bullets"] ul ul {
+      list-style-type: disc;
+    }
+    [layout] > * {
+      margin: 30px 120px;
+    }
+    [layout="bullets"][h-left] ul,
+    [layout="bullets"][h-left] ol {
+      margin-left: calc(120px + 1em);
+    }
+    [layout] small {
+      font-size: 60%;
+    }
+    [layout] p {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+<!-- put your slides -->
+
+<template layout="title" h-left type="text/x-markdown">
+<style>h1 { line-height: 1.3; }</style>
+# WCAG 2.0<br>時間依存メディア
+
+2017.06.30 - TGIF [@ahomu](https://twitter.com/ahomu)
+</template>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## WCAG 2.0
+
+Web Content Accessibility Guidelines (WCAG) 2.0
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## 1.2 時間依存メディア:<br>時間依存メディアには<br>代替コンテンツを提供すること。
+
+？？？？？
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## なるほど、わからん
+
+>1.2.3 音声解説、又はメディアに対する代替 (収録済) : 同期したメディアに含まれている収録済の映像コンテンツに対して、時間依存メディアに対する代替コンテンツ又は音声解説が提供されている。ただし、その同期したメディアがメディアによるテキストの代替であって、メディアによる代替であることが明確にラベル付けされている場合は除く。 (レベル A)
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## つまるところ
+
+- 時間依存メディア = 音声または映像
+- 同期したメディア = 音声付きの映像（動画）
+- ※ [WCAG 2.0解説書](http://waic.jp/docs/UNDERSTANDING-WCAG20/media-equiv.html) を読めば辛うじてわかる
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## つまり音声や映像、動画に<br>求められるアクセシビリティの話
+
+を、かみくだいて紹介します。
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## 適合レベルは A〜AAA
+
+A は最低限、AA はガチ、AAA は商売
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## これから紹介する3つはすべてA
+
+つまり最低限、という扱い
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## ① (音声|映像)のみのメディアのテキスト化
+
+>1.2.1 音声のみ及び映像のみ (収録済) : 収録済の音声しか含まないメディア及び収録済の映像しか含まないメディアは、次の事項を満たしている。ただし、その音声又は映像がメディアによるテキストの代替であって、メディアによる代替であることが明確にラベル付けされている場合は除く: (レベル A)
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## つまり
+
+- 音声は内容をテキストに書き起こす
+- 映像も様子をテキストに書き起こす
+- **なんらかテキストになっていれば OK**
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## ② 動画メディアのキャプション<br>（主に聴覚障害者向け）
+
+>1.2.2 キャプション (収録済) : 同期したメディアに含まれているすべての収録済の音声コンテンツに対して、キャプションが提供されている。ただし、その同期したメディアがメディアによるテキストの代替であって、メディアによる代替であることが明確にラベル付けされている場合は除く。 (レベル A)
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## つまり
+
+- 聴覚障害者は演者の発言が分からない
+- **字幕があれば OK**
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## ③ 動画メディアの書き起こし<br>（主に視覚障害者向け）
+
+>1.2.3 音声解説、又はメディアに対する代替 (収録済) : 同期したメディアに含まれている収録済の映像コンテンツに対して、時間依存メディアに対する代替コンテンツ又は音声解説が提供されている。ただし、その同期したメディアがメディアによるテキストの代替であって、メディアによる代替であることが明確にラベル付けされている場合は除く。 (レベル A)
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## つまり
+
+- 視覚障害者は演者の動きが分からない
+- (音声|映像)のみの場合より内容が複雑
+- **動画の内容が事細かに書き起こされたテキストがあれば OK**
+- ※ 音声ガイドを挿入するという手もあるが難度が上がる
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## という話をコーポレートサイトの<br>運用者向けに要約するお仕事してました
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## AbemaTV で考えると...
+
+字幕はともかく視覚障害者向けの(書き起こし|音声ガイド)がきびしい
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## 音声ガイドの例（きびしい）
+
+- 音声ガイド：タイトル「Teaching Evolution ケーススタディ　ボニー・チェン」くちばしが長くて薄い鳥の写真を、先生が見せている。
+- ボニー・チェン：「これらの写真はすべて、フロリダのエバーグレイド国立公園で撮影されたものです。」
+- 音声ガイド：先生が生徒ひとりひとりに2つの平らで薄い木の棒切れを手渡ししています。
+- ボニー・チェン：「今日、皆さんは、こんなくちばしをした、脚の長い鳥になったふりをしてください。」
+- 音声ガイド： 先生が、2つの棒切れを口にあてて、くちばしの形を作っています。
+</script>
+
+<script layout="bullets" h-left type="text/x-markdown">
+## 書き起こしのチェック項目（きびしい）
+
+- 発話内容が、動画内の発話内容と一致している
+- 音の説明がある
+- 場面及び場面の変更の説明がある
+- あらゆる"登場人物"（人、動物など）の行動及び表情の説明がある
+</script>
+
+<!- - - - - - - - - - - - - - - - - - - - - - - - - - ->
+
+<script layout="cover" h-left type="text/x-markdown"
+        backface="./img/bg-back-cover.jpg" backface-filter="blur(1px) brightness(.9)">
+## KI BI SHI I
+
+Web Site [aho.mu](http://aho.mu) / Twitter [@ahomu](https://twitter.com/ahomu)
+
+## Resources
+
+- [時間依存メディアについて（カッコカリ） ::ハブろぐ](https://havelog.ayumusato.com/develop/a11y/e740-timed_base_media.html)
+- [ガイドライン 1.2 を理解する | WCAG 2.0解説書](http://waic.jp/docs/UNDERSTANDING-WCAG20/media-equiv.html)
+- [実装チェックリストの例 2012年11月版](http://waic.jp/docs/jis2010/test-guidelines/201211/icl-index.html)
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+<script src="./dist/talkie.min.js"></script>
+<script>
+  var talkie = Talkie({wide: true, notransition: true, linkShouldBlank: true});
+
+  talkie.key('s').subscribe(talkie.next$);
+  talkie.key('n').subscribe(talkie.next$);
+  talkie.key('a').subscribe(talkie.prev$);
+  talkie.key('p').subscribe(talkie.prev$);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    talkie.changed.subscribe(function(current) {
+//      console.clear();
+      // print presenter notes
+      console.info(talkie.notes[current.getAttribute('data-page')]);
+    });
+  });
+</script>
+</body>
+</html>
