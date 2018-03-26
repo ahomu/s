@@ -122,6 +122,10 @@ current.subscribe(function(v) {
 - [HTML5 Experts 幽霊部員](http://html5experts.jp/ahomu/)
 </script>
 
+<section layout="bullets">
+  <blockquote class="twitter-tweet" lang="en"><p>最近の小学校では、「お父さん・お母さんの名前をグーグルで検索してみましょう」という、世にも恐ろしい授業があるらしい。・・・。</p>&mdash; 丹　洋介 (@yosuke_tan) <a href="https://twitter.com/yosuke_tan/status/559295158278053889">January 25, 2015</a></blockquote>
+</section>
+
 <script layout="bullets" type="text/x-markdown">
 ## 今日のアジェンダ
 
@@ -926,6 +930,12 @@ Canvas にドラッグ操作で線を描画する
 </p>
 </script>
 
+<section layout="video">
+  <video src="./img/demo-canvas-rxjs.mov" controls>
+    <p>oops!</p>
+  </video>
+</section>
+
 <!--
 <script layout="bullets" type="text/x-markdown">
 ## 普通に書くと？
@@ -1064,6 +1074,18 @@ ReactとBacon.jsを組み合わせて簡単なUIを作ってみる
 [https://github.com/ahomu/demo-react-bacon](https://github.com/ahomu/demo-react-bacon)
 </script>
 
+<section layout="video">
+  <video src="./img/demo-input-key.mov" controls>
+    <p>oops!</p>
+  </video>
+</section>
+
+<section layout="video">
+  <video src="./img/demo-submit-trigger.mov" controls>
+    <p>oops!</p>
+  </video>
+</section>
+
 <script layout="iframe" type="text/x-markdown">
 <iframe src="http://ahomu.github.io/hn-react-rxjs/#/"></iframe>
 
@@ -1148,11 +1170,14 @@ Bacon.js で書かれたHTMLスライドライブラリ
 - <a href="https://twitter.com/ahomu" target="_blank" style="color: white !important; font-weight:bold;">@ahomu</a>
 </script>
 
-<!--<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>-->
+<section layout>
+</section>
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script src="./dist/highlight.min.js"></script>
 <script src="./dist/talkie.js"></script>
 <script>
-  var talkie  = Talkie({wide:false, control: true, progress: true});
+  var talkie  = Talkie({wide: false, control: false, progress: false});
 
   talkie.next.plug(talkie.control.keydown('s'));
   talkie.next.plug(talkie.control.keydown('n'));
@@ -1160,13 +1185,16 @@ Bacon.js で書かれたHTMLスライドライブラリ
   talkie.prev.plug(talkie.control.keydown('p'));
 
   window.Bacon = talkie.Bacon;
-
-  talkie.next.plug(Bacon.fromEventTarget(document.getElementById('next'), 'touchend'));
-  talkie.prev.plug(Bacon.fromEventTarget(document.getElementById('prev'), 'touchend'));
-
   window.next  = function() { talkie.next.push(); };
   window.prev  = function() { talkie.prev.push(); };
   window.jump  = function(num) { talkie.jump.push(num); };
+
+  var nextEl = document.getElementById('next');
+  var prevEl = document.getElementById('prev');
+  if (nextEl && prevEl) {
+    talkie.next.plug(Bacon.fromEventTarget(nextEl, 'touchend'));
+    talkie.prev.plug(Bacon.fromEventTarget(prevEl, 'touchend'));
+  }
 </script>
 </body>
 </html>
