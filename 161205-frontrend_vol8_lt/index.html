@@ -7,16 +7,22 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/monokai_sublime.min.css">
   <style>
     [layout] {
-      font-family: "NotoSansCJKjp-Light","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+      font-size: 1.1em;
+      font-family: "NotoSansCJKjp-Medium","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
     }
     [layout] h1, [layout] h2, [layout] h3, [layout] h4, [layout] h5, [layout] h6 {
       font-weight: bold;
       font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
     }
-    [layout="title"][invert] a {
-      /*color: #fff !important;*/
-      /*text-decoration: underline;*/
+    [layout] a {
+      color: inherit !important;
+      text-decoration: underline;
     }
+    /*[layout="title"][invert] a,
+    [layout="bullets"][invert] a {
+      color: #fff !important;
+      text-decoration: underline;
+    }*/
   </style>
 </head>
 <body>
@@ -37,8 +43,14 @@
 - [aho.mu](http://aho.mu)
 - 最近、[久米島に日帰り](https://havelog.ayumusato.com/travel/e727-1day_okinawa.html)でいってきた
 - 株式会社 [AbemaTV](https://abema.tv/) 出向中
-- 本社の [Web Iniative Center](https://havelog.ayumusato.com/misc/e701-web_initiative_center.html) も兼務
-- [Frontend Weekly](https://frontendweekly.tokyo) キュレーター
+<!--- 本社の [Web Iniative Center](https://havelog.ayumusato.com/misc/e701-web_initiative_center.html) も兼務
+- [Frontend Weekly](https://frontendweekly.tokyo) キュレーター-->
+</template>
+
+<template layout="title" type="text/x-markdown">
+## 最近考えていることの<br>導入部を話します
+
+5分で！
 </template>
 
 <!-- ====================================================================================== -->
@@ -121,7 +133,7 @@ a, button, input, select {
 <script layout="title" type="text/x-markdown">
 ## <strong>｢使えない｣</strong>を<br>減らしたい
 
-プロダクトの実装品質とクライアント環境のマッチング<br>クライアント環境がプアすぎて使えないのはやむなし
+プロダクトの実装品質とクライアント環境の両輪<br>クライアント環境がプアすぎたらしょうがない
 </script>
 
 <script layout="title" type="text/x-markdown">
@@ -153,11 +165,11 @@ ref. [あなたの価値を高めるWebアクセシビリティ](http://www.slid
         backface-filter="blur(0) brightness(.6)">
 ## アクセシビリティの再考
 
-UI の品質という観点でアクセシビリティを取り入れたい
+UI の品質にアクセシビリティを取り入れたい
 </script>
 
 <script layout="bullets" type="text/x-markdown">
-<strong>｢アクセシビリティ = 一部のユーザー向け｣</strong> というバイアス
+<strong>｢アクセシビリティ = 一部の人向け｣</strong> というバイアス
 </script>
 
 <script layout="bullets" invert type="text/x-markdown">
@@ -222,10 +234,10 @@ UI の品質という観点でアクセシビリティを取り入れたい
 <script layout="title" invert type="text/x-markdown"
         backface="./img/wcag.png"
         backface-filter="blur(3px) brightness(.4)">
-### [WCAG Overview ◦ Web Accessibility Initiative ◦ W3C](https://www.w3.org/WAI/intro/wcag.php)
+### [WCAG Overview](https://www.w3.org/WAI/intro/wcag.php)
 
-ウェブコンテンツアクセシビリティガイドライン、の略<br>
-日本国内用では [JIS X 8341-3:2016](http://waic.jp/docs/jis2016/understanding/201604/) として定義される
+ウェブコンテンツアクセシビリティガイドライン<br>
+日本国内用では [JIS X 8341-3:2016](http://waic.jp/docs/jis2016/understanding/201604/) として定義
 </script>
 <!--
 <script layout="title" invert type="text/x-markdown">
@@ -282,7 +294,7 @@ BBC のモバイル向けガイドライン
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
 <script src="./dist/talkie.min.js"></script>
 <script>
-  var talkie = Talkie({wide: true, notransition: true});
+  var talkie = Talkie({wide: false, notransition: true});
 
   talkie.key('s').subscribe(talkie.next$);
   talkie.key('n').subscribe(talkie.next$);
