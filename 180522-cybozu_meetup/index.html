@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>キラ★キラしないエンジニャー採用</title>
+    <link rel="canonical" href="https://s.aho.mu/180522-cybozu_meetup" />
+    <link rel="stylesheet" href="./dist/talkie.css">
+    <link rel="stylesheet" href="./dist/talkie.theme-default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai-sublime.min.css">
+    <meta property="og:url" content="https://s.aho.mu/180522-cybozu_meetup">
+    <meta property="og:site_name" content="キラ★キラしないエンジニャー採用">
+    <meta property="og:author" content="ahomu">
+    <meta name="twitter:url" content="https://s.aho.mu/180522-cybozu_meetup">
+    <meta name="twitter:site" content="@ahomu">
+    <meta property="og:image" content="https://s.aho.mu/180522-cybozu_meetup/img/3.jpg">
+    <meta name="twitter:image" content="https://s.aho.mu/180522-cybozu_meetup/img/3.jpg">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="キラ★キラしないエンジニャー採用">
+    <meta property="og:description" content="Cybozu Meetup エンジニア採用のあれこれ(2018年5月22日)での発表資料">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="キラ★キラしないエンジニャー採用">
+    <meta name="twitter:description" content="Cybozu Meetup エンジニア採用のあれこれ(2018年5月22日)での発表資料">
+    <meta name="description" content="Cybozu Meetup エンジニア採用のあれこれ(2018年5月22日)での発表資料">
+    <style>
+    /* base overriding */
+    [layout] {
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+    [layout] h1, [layout] h2, [layout] h3, [layout] h4, [layout] h5, [layout] h6 {
+      font-weight: bold;
+      font-family: "NotoSansCJKjp-Regular","Open Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    }
+
+    /* layout=profile */
+    [layout=profile] > *:nth-child(1) {
+      flex: 1 !important;
+      text-align: center;
+    }
+    [layout=profile] > *:nth-child(1) img {
+      border-radius: 50%;
+    }
+    [layout=profile] > *:nth-child(1) strong {
+      font-size: 3em;
+    }
+    [layout=profile] > *:nth-child(2) {
+      flex: 2.5 !important;
+    }
+    [layout=profile] > *:nth-child(2) .hljs {
+      font-size: 1em;
+      font-family: Consolas, Monaco,'Andale Mono',monospace;
+    }
+    [layout=title] h3 {
+      font-size: 3.6em;
+    }
+    </style>
+</head>
+<body>
+
+<!-- put your slides -->
+
+
+<tk-slide layout="title" h-left invert type="text/x-markdown"
+          backface="./img/1.jpg"
+          backface-filter="blur(0) brightness(.33)">
+# ✨キラ⭐️キラしない✨<br>✨エンジニャー採用✨
+
+[Cybozu Meetup エンジニア採用のあれこれ](https://cybozu.connpass.com/event/87448/)<br>
+by [@ahomu](https://aho.mu) - CyberAgent, Inc.
+
+</tk-slide>
+
+<tk-slide layout="profile" horizontal invert type="text/x-markdown">
+<div>
+  <img src="./img/masakari.png" alt="ahomu" />
+  <strong>@ahomu</strong>
+</div>
+
+```json
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+  "name": "Ayumu Sato",
+  "alternateName": "あほむ",
+  "url": "https://aho.mu",
+  "jobTitle": "Web Developer",
+  "worksFor": "CyberAgent, Inc.",
+  "workLocation": "名古屋市渋谷区",
+  "sameAs": [
+    "https://twitter.com/ahomu",
+    "https://github.com/ahomu"
+  ]
+}
+```
+</tk-slide>
+
+<tk-slide layout="bullets" type="text/x-markdown">
+## 今からしゃべること
+
+- 会社的にどうやっているか
+- 自分的に何をやっているか
+- 採用について感じている課題感のアレコレ
+</tk-slide>
+
+<!-- ==================================================================== -->
+
+<tk-slide layout="title" invert type="text/x-markdown"
+          backface="./img/2.jpg"
+          backface-filter="blur(0) brightness(.5)">
+## 会社的にどうやっているか
+
+事業部、子会社ごとに異なる採用をしてるけど共通部分
+</tk-slide>
+
+<tk-slide layout type="text/x-markdown">
+### 採用ビジョン
+
+<blockquote>
+<p style="text-align:left !important;">・能力の高さより一緒に働きたい人を集める。<br>・採用には全力をつくす。</p>
+</blockquote>
+
+<small><cite>via. [ビジョン | 株式会社サイバーエージェント](https://www.cyberagent.co.jp/corporate/vision/)</cite></small>
+</tk-slide>
+
+<tk-slide layout="title" invert type="text/x-markdown">
+### <small>(いわゆる？) </small>技術力よりも<br><strong>カルチャーマッチ</strong>
+
+お金は単純化された技術力だけではなく<br>発揮しうるパフォーマンスに支払われるのだ...(´・ω・`)
+</tk-slide>
+
+<tk-slide layout invert type="text/x-markdown">
+### ところで、みなさんの好きなやつ
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="ja" dir="ltr">サイバーサイバー週5で飲み会<br>サイバーサイバー顔採用 <a href="https://t.co/0Xe8OUiny4">pic.twitter.com/0Xe8OUiny4</a></p>&mdash; すしめろくん (@sushi__melody) <a href="https://twitter.com/sushi__melody/status/996180653220642817?ref_src=twsrc%5Etfw">May 15, 2018</a></blockquote>
+</tk-slide>
+
+<tk-slide layout type="text/x-markdown">
+### 顔採用じゃないってば🙅
+
+<del>このブランディングまあまあ迷惑だが</del> ネタとしては優秀
+</tk-slide>
+  
+<tk-slide layout type="text/x-markdown">
+### 現場社員の参画
+
+>｢YJCプロジェクト（良い人を自分たちでちゃんと採用する）｣と呼ばれる、現場社員と人事が9チームに分かれて、それぞれがゼロから採用設計を行うプロジェクト
+
+<small><cite>via. [｢会社説明会やめます｣サイバーエージェントの狙いは地方学生の格差解消と採用改革](https://www.businessinsider.jp/post-108714)</cite></small>
+</tk-slide>
+
+<!-- ==================================================================== -->
+
+<tk-slide layout="bullets" invert type="text/x-markdown"
+          backface="./img/3.jpg"
+          backface-filter="blur(0) brightness(.4)">
+## 自分的に何をやっているか
+
+メディア事業の Web エンジニア系の中途採用が主戦場  
+なので、そのへんではどうやってるか的な話を少々
+</tk-slide>
+
+<tk-slide layout="bullets" type="text/x-markdown">
+### 採用活動とその周辺
+
+- ニーズの把握
+  - 採用目標は？ 直近のニーズは？ 配属現場の要望は？
+- 採用ブランディング
+  - イベント協賛とかブログとかコミュニティ活動とか
+- 選考、勧誘
+  - 前述の通りカルチャーマッチ重視、内定承諾率〜〜
+- 戦力化、帰属化
+  - 社内情報面の支援、人間関係のチャネル構築
+</tk-slide>
+
+<tk-slide layout="bullets" type="text/x-markdown">
+### 面接は現場エンジニアが行う
+
+- 面接に慣れてる人とそうでない人の2人1組で面接
+- プロ人事がカルチャーマッチを再確認して内定🎉
+- 中途採用でえらいひとはあまりでてこない
+- 選考と同時に、勧誘の場としてトークをがんばる
+</tk-slide>
+
+<tk-slide layout="bullets" type="text/x-markdown">
+### 採用後の当たり前だけど大切なこと
+
+- 本人の就業イメージとズレのない配属をする
+- 入社前から配属現場のことを知る機会がある
+- 仕事に必要なものが過不足なく入社日にある
+- アクセスしたい情報にアクセスできる
+- 他のチームのメンバーと知り合う機会がある
+- キャッチアップに必要なチュートリアルがある
+</tk-slide>
+
+<tk-slide layout invert type="text/x-markdown">
+### 定着してもらうことが重要<br>採用できても即退職では互いに不幸
+
+![退職エントリのいつものやつ](./img/taisyoku.jpg)
+</tk-slide>
+
+<tk-slide layout="bullets" type="text/x-markdown">
+### 自分がエンジニアとして関わる採用
+
+- 採用はエンジニアだけではできない（当たり前）
+  - 人事や広報と仲良くしておくことは意識してる
+- イベントや面接で"採用して終わり"にしない努力
+- 新卒/中途問わず、育成やキャッチアップの支援は必要
+- エンジニアだからこそできる"採用した後"のケア
+</tk-slide>
+
+<!-- ==================================================================== -->
+
+<tk-slide layout="title" invert type="text/x-markdown"
+          backface="./img/4.jpg"
+          backface-filter="blur(0) brightness(.5)">
+## 採用について感じている<br>課題感のアレコレ
+
+</tk-slide>
+
+<tk-slide layout="title" invert type="text/x-markdown">
+課題1
+
+### 採用活動の評価
+
+本業に対するアドオンとして評価するのが現状<br>KPI とか数字責任を持って評価するのもどうなの感
+</tk-slide>
+
+<tk-slide layout="title" invert type="text/x-markdown">
+課題2
+
+### 「AbemaTV いきたい」<br>ってみんな言う
+
+AbemaTV 本体以外にもいっぱい事業あるんですよ...<br>ありがたいんだけど...うん...
+</tk-slide>
+
+<tk-slide layout="title" invert type="text/x-markdown">
+課題3
+
+### エンジニアは<br>人件費を決裁できない
+
+お金が大好きなエンジニア諸氏に<br>お金の話しづらい（相場を吊り上げたいわけではない）
+</tk-slide>
+
+<!-- ==================================================================== -->
+
+<tk-slide layout="title" invert type="text/x-markdown"
+          backface="./img/5.jpg"
+          backface-filter="blur(1px) brightness(.5)">
+## まとめ
+</tk-slide>
+
+<tk-slide layout="bullets" invert type="text/x-markdown">
+### 採用についての話でした
+
+- とにかくカルチャーマッチが前提
+- サイバーエージェントは顔採用じゃない（たぶん）
+- 採用活動は現場と人事でタッグを組んでやる
+- あとはパネルトークで！
+</tk-slide>
+
+<tk-slide layout="title" invert type="text/x-markdown"
+          backface="./img/6.jpg"
+          backface-filter="blur(1px) brightness(.6)">
+## **Cheers! 🍻**
+
+CyberAgent / AbemaTV に興味ある方はお気軽に！<br>
+🔥新規事業ラッシュ攻略チームで採用やってます🔥
+</tk-slide>
+
+<tk-pager></tk-pager>
+<tk-progress></tk-progress>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="./dist/webcomponents-loader.js"></script>
+<script src="./dist/talkie.js"></script>
+<script>
+window.addEventListener('WebComponentsReady', function(e) {
+  document.body.className += ' webcomponents-ready';
+  talkie.run({wide: false, horizontal: false});
+});
+</script>
+<script>
+window.twttr = (function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0],
+t = window.twttr || {};
+if (d.getElementById(id)) return t;
+js = d.createElement(s);
+js.id = id;
+js.src = "https://platform.twitter.com/widgets.js";
+fjs.parentNode.insertBefore(js, fjs);
+
+t._e = [];
+t.ready = function(f) {
+  t._e.push(f);
+};
+
+return t;
+}(document, "script", "twitter-wjs"));
+</script>
+</body>
+</html>
